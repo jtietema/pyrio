@@ -1,4 +1,7 @@
 
+from player import Player
+from map import Map
+
 class World():
     def __init__(self):
         self.player = Player()
