@@ -5,7 +5,7 @@ class Player():
     def __init__(self):
         self.image = None
         
-    def update(self, state):
+    def update(self, tick_data):
         pass
         
     def render(self, screen):
