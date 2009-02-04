@@ -6,7 +6,7 @@ class Player():
         self.image = None
         
     def update(self, state):
-        # do something
+        pass
         
     def render(self, screen):
         pygame.draw.rect(screen, (255,0,0), (380, 280, 40, 40))

@@ -4,7 +4,7 @@ class Map():
         self.player = player
         
     def update(self, state):
-        # do something
+        pass
         
     def render(self, screen):
-        # do something
+        pass
