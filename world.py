@@ -7,9 +7,9 @@ class World():
         self.player = Player()
         self.map = Map(self.player)
         
-    def update(self, state):
-        self.player.update(state)
-        self.map.update(state)
+    def update(self, tick_data):
+        self.player.update(tick_data)
+        self.map.update(tick_data)
         
     def render(self, screen):
         screen.fill((164,252, 255))

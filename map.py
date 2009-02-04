@@ -7,7 +7,7 @@ class Map():
         self.player = player
         self.groundUp = pygame.image.load(os.path.join('assets', 'ground', 'up.png')).convert()
         
-    def update(self, state):
+    def update(self, tick_data):
         pass
         
     def render(self, screen):
