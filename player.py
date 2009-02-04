@@ -9,4 +9,4 @@ class Player():
         pass
         
     def render(self, screen):
-        pygame.draw.rect(screen, (255,0,0), (380, 280, 40, 40))
+        pygame.draw.rect(screen, (255,0,0), (380, 360, 40, 40))
