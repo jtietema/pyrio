@@ -4,6 +4,8 @@ import pygame
 from pygame.locals import *
 from sys import exit
 
+from game import Game
+
 pygame.init()
 
 screen = pygame.display.set_mode((800, 600), 0, 32)
