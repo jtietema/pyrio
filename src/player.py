@@ -34,7 +34,7 @@ class Player(MoveableEntity):
             #self.x -= x_delta
             x_delta *= -1
         elif pressed_keys[K_RIGHT]:
-            self.x += x_delta
+            #self.x += x_delta
             x_delta *= 1
         else:
             x_delta = 0
