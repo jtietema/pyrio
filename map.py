@@ -47,3 +47,5 @@ class Map():
             
             cur_tile_x += tile_width
         
+    def collisions(self, (x,y), (delta_x, delta_y)):
+        
