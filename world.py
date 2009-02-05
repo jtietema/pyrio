@@ -5,7 +5,7 @@ from map import Map
 class World():
     def __init__(self):
         self.player = Player()
-        self.map = Map(self.player)
+        self.map = Map('test', self.player)
         
     def update(self, tick_data):
         self.player.update(tick_data)

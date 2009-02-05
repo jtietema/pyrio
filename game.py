@@ -6,7 +6,7 @@ from sys import exit
 from world import World
 
 class Game():
-    def __init__(self):
+    def create_world(self):
         self.world = World()
         
     def update(self, tick_data):
@@ -14,10 +14,8 @@ class Game():
         
     def render(self, screen):
         self.world.render(screen)
-    
-    
-    @classmethod
-    def run(cls):
+        
+    def run(self):
         pygame.init()
 
         screen = pygame.display.set_mode((800, 600), 0, 32)
@@ -25,7 +23,7 @@ class Game():
 
         clock = pygame.time.Clock()
         
-        game = cls()
+        self.create_world()
 
         while True:
             tick_data = {}
@@ -38,8 +36,8 @@ class Game():
             tick_data['pressed_keys'] = pygame.key.get_pressed()
             tick_data['screen_size'] = screen.get_size()
 
-            game.update(tick_data)
-            game.render(screen)
+            self.update(tick_data)
+            self.render(screen)
 
             pygame.display.update()
         

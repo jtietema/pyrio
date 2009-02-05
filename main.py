@@ -2,4 +2,5 @@
 
 from game import Game
 
-Game.run()
+game = Game()
+game.run()
