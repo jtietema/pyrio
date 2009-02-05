@@ -21,7 +21,7 @@ class Map():
             Tile('up', (320, 200))
         )
         
-        self.width = len(self.tiles) * 64
+        self.width = sum([tile.get_width() for tile in self.tiles])
         self.height = 600
         
     def update(self, tick_data):
@@ -36,9 +36,9 @@ class Map():
         
         for tile in self.tiles:
             tile_width, tile_height = tile.get_size()
-            tile_x = tile.get_x() - self.x_offset
-            tile_y = tile.get_y() - self.y_offset
+            tile_screen_x = tile.get_x() - self.x_offset
+            tile_screen_y = tile.get_y() - self.y_offset
             
-            if ((tile_x + tile_width > 0 or tile_x < screen_width) and (tile_y + tile_height > 0 or tile_y < screen_height)):
-                tile.render(screen, (tile_x, tile_y))
+            if ((tile_screen_x + tile_width > 0 or tile_screen_x < screen_width) and (tile_screen_y + tile_height > 0 or tile_y < screen_height)):
+                tile.render(screen, (tile_screen_x, tile_screen_y))
         
