@@ -29,7 +29,7 @@ class Map():
         screen_width, screen_height = screen.get_size()
         
         for tile in self.tiles:
-            if tile not None:
+            if tile is not None:
                 tile_width, tile_height = tile.get_size()
                 
                 tile_y_screen = tile.get_y() - self.y_offset
