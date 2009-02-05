@@ -21,7 +21,7 @@ class Game():
         pygame.init()
 
         screen = pygame.display.set_mode((800, 600), 0, 32)
-        pygame.display.set_caption("Pygame platform")
+        pygame.display.set_caption('Pygame platform')
 
         clock = pygame.time.Clock()
         
@@ -34,8 +34,8 @@ class Game():
                 if event.type == QUIT:
                     exit()
 
-            tick_data["time_passed"] = clock.tick()
-            tick_data["pressed_keys"] = pygame.key.get_pressed()
+            tick_data['time_passed'] = clock.tick()
+            tick_data['pressed_keys'] = pygame.key.get_pressed()
 
             game.update(tick_data)
             game.render(screen)
