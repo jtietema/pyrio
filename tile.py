@@ -3,10 +3,11 @@ import pygame
 import os
 
 from game_entity import GameEntity
+from asset_manager import AssetManager
 
 class Tile(GameEntity):
     def __init__(self, name, (x, y)):
-        self.image = pygame.image.load(os.path.join('assets', 'images', 'ground', name + '.png')).convert()
+        self.image = AssetManager.get_image('ground', name + '.png')
         
         GameEntity.__init__(self, (x, y), self.image.get_size())
     
