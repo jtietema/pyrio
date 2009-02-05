@@ -2,6 +2,9 @@
 import pygame
 
 class GameEntity():
+    DIRECTION_RIGHT = 1
+    DIRECTION_LEFT = 0
+    
     def __init__(self, (x,y), (width, height)):
         # position
         self.x = x
@@ -26,6 +29,9 @@ class GameEntity():
     def get_position(self):
         return (self.x, self.y)
     
+    def get_real_position(self):
+        return (self.x - (self.width / 2), self.y - (self.height / 2))
+    
     def get_width(self):
         return self.width
     
@@ -34,3 +40,8 @@ class GameEntity():
         
     def get_size(self):
         return (self.width, self.height)
+    
+    def render(self, screen, image, (x, y)):
+        x -= (image.get_width() / 2)
+        y -= (image.get_height() / 2)
+        screen.blit(image, (x, y))

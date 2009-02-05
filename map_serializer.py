@@ -26,9 +26,9 @@ class MapSerializer():
         rows = [row.ljust(max_length) for row in rows]
         
         tiles = []
-        y = 0
+        y = cls.tile_height / 2
         for row_index, row in enumerate(rows):
-            x = 0
+            x = cls.tile_width / 2
             
             for col_index, char in enumerate(row):
                 if not cls.char_map.has_key(char):
