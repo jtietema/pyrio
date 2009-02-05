@@ -25,7 +25,7 @@ class Game():
 
         clock = pygame.time.Clock()
         
-        game = Game()
+        game = cls()
 
         while True:
             tick_data = {}
@@ -36,6 +36,7 @@ class Game():
 
             tick_data['time_passed'] = clock.tick()
             tick_data['pressed_keys'] = pygame.key.get_pressed()
+            tick_data['screen_size'] = screen.get_size()
 
             game.update(tick_data)
             game.render(screen)
