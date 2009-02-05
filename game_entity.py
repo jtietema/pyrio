@@ -17,8 +17,20 @@ class GameEntity():
         left = pygame.transform.flip(right, True, False)
         return (left, right)
         
+    def get_x(self):
+        return self.x
+    
+    def get_y(self):
+        return self.y
+        
     def get_position(self):
         return (self.x, self.y)
+    
+    def get_width(self):
+        return self.width
+    
+    def get_height(self):
+        return self.height
         
     def get_size(self):
         return (self.width, self.height)
