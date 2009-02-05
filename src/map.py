@@ -6,19 +6,19 @@ import os
 from tile import Tile
 
 class Map():
-    def __init__(self, player):
-        self.player = player
+    def __init__(self):
+        self.player = None
         
         self.x_offset = 0
         self.y_offset = 0
         
         self.tiles = (
-            Tile('up', (0, 200)),
-            Tile('up', (64, 200)),
-            Tile('up', (128, 200)),
-            Tile('up', (192, 200)),
-            Tile('up', (256, 200)),
-            Tile('up', (320, 200))
+            Tile('up', (0, 200), self),
+            Tile('up', (64, 200), self),
+            Tile('up', (128, 200), self),
+            Tile('up', (192, 200), self),
+            Tile('up', (256, 200), self),
+            Tile('up', (320, 200), self)
         )
         
         self.width = sum([tile.get_width() for tile in self.tiles])
@@ -42,4 +42,16 @@ class Map():
             if ((tile_screen_x + tile_width > 0 or tile_screen_x < screen_width) and (tile_screen_y + tile_height > 0 or tile_y < screen_height)):
                 tile.render(screen, (tile_screen_x, tile_screen_y))
     def collisions(self, (x,y), (delta_x, delta_y)):
+        min_x = delta_x
+        min_y = delta_y
+        for tile in self.tiles:
+            tile_x, tile_y = tile.collision((x,y), (delta_x, delta_y))
+            if tile_x < min_x:
+                min_x = tile_x
+            if tile_y < min_y:
+                min_y = tile_y
+        return (min_x, min_y)
+        
+    def add_player(self, player):
+        self.player = player
         

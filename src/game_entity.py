@@ -44,9 +44,8 @@ class GameEntity():
         distance_x = abs(self.x - x) - (self.width / 2)
         distance_y = abs(self.y - y) - (self.height / 2)
         
-        if distance_x < delta_x:
+        if (distance_x < delta_x) and (distance_y < delta_y):
             delta_x = distance_x
-        if distance_y < delta_y:
             delta_y = distance_y
         return (delta_x, delta_y)
         

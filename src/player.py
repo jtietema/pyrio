@@ -32,13 +32,25 @@ class Player(GameEntity):
         
         pressed_keys = tick_data['pressed_keys']
         if pressed_keys[K_LEFT]:
-            self.x -= x_delta
-        if pressed_keys[K_RIGHT]:
+            #self.x -= x_delta
+            x_delta *= -1
+        elif pressed_keys[K_RIGHT]:
             self.x += x_delta
+            x_delta *= 1
+        else:
+            x_delta = 0
         if pressed_keys[K_UP]:
-            self.y -= y_delta
-        if pressed_keys[K_DOWN]:
-            self.y += y_delta
+            #self.y -= y_delta
+            y_delta *= -1
+        elif pressed_keys[K_DOWN]:
+            #self.y += y_delta
+            y_delta *= 1
+        else:
+            y_delta = 0
+        
+        x_delta, y_delta = self.map.collisions((self.x, self.y), (x_delta, y_delta))
+        self.x += x_delta
+        self.y += y_delta
         
         if pressed_keys[K_LEFT] or pressed_keys[K_RIGHT]:
             if pressed_keys[K_LEFT]:
