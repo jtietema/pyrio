@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from game import Game
+from src.game import Game
 
 game = Game()
 game.run()

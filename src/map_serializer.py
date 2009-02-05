@@ -8,7 +8,7 @@ class MapSerializer():
     
     char_map = {
         ' ': None,
-        '_': 'up',
+        '-': 'up',
         '#': 'middle'
     }
     
