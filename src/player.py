@@ -1,5 +1,4 @@
 
-import pygame
 from pygame.locals import *
 import os
 
@@ -14,11 +13,11 @@ class Player(GameEntity):
         
         # the image data
         # standing
-        self.stand = self.load_twodirectional_asset(os.path.join('assets', 'images', 'player', 'stand_right.png'), (64,64))
+        self.stand = self.load_twodirectional_asset(os.path.join('..', 'assets', 'images', 'player', 'stand_right.png'), (64,64))
         
         # walking
-        self.walk_1 = self.load_twodirectional_asset(os.path.join('assets', 'images', 'player', 'walk_right_1.png'), (64,64))
-        self.walk_2 = self.load_twodirectional_asset(os.path.join('assets', 'images', 'player', 'walk_right_2.png'), (64,64))
+        self.walk_1 = self.load_twodirectional_asset(os.path.join('..', 'assets', 'images', 'player', 'walk_right_1.png'), (64,64))
+        self.walk_2 = self.load_twodirectional_asset(os.path.join('..', 'assets', 'images', 'player', 'walk_right_2.png'), (64,64))
         
         # the state properties
         self.right = True
