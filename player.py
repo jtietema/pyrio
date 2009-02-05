@@ -30,7 +30,7 @@ class Player(GameEntity):
                 self.right = True
             self.walking = True
             self.walkingCounter += tick_data['time_passed']
-            if self.walkingCounter > 900:
+            if self.walkingCounter > 600:
                 self.walkingCounter = 0
         else:
             self.walking = False
@@ -42,7 +42,7 @@ class Player(GameEntity):
         else:
             direction = 0
         if self.walking:
-            if self.walkingCounter > 600:
+            if self.walkingCounter > 300:
                 screen.blit(self.walk_2[direction], (400-32, 400-64))
             else:
                 screen.blit(self.walk_1[direction], (400-32, 400-64))
