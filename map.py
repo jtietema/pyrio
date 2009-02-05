@@ -6,48 +6,16 @@ import os
 class Map():    
     def __init__(self, player):
         self.player = player
-        self.speed = .3
+        self.speed = .2
         self.x_offset = 0
         
-        self.tiles = (
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png',
-            'up.png'
-        )
+        self.tile_dimensions = (64, 64)
         
+        self.tiles = ('up.png', ) * 30
+        
+        self.width = len(self.tiles) * self.tile_dimensions[0]
+        
+        # USE ASSET MANAGER HERE
         self.tile_images = {
             'up.png': pygame.image.load(os.path.join('assets', 'ground', 'up.png')).convert()
         }
@@ -60,19 +28,22 @@ class Map():
         if tick_data['pressed_keys'][K_RIGHT]:
             self.x_offset -= x_delta
         
-    def render(self, screen):
-        y = screen.get_height() - 64
+        # Determine clipping
+        self.x_offset = min(0, self.x_offset)
+        # SCREEN SIZE NOT AVAILABLE HERE
+        self.x_offset = max(self.x_offset, -(self.width - 800))
         
-        screen_width = screen.get_width()
+    def render(self, screen):        
+        screen_width, screen_height = screen.get_size()
+        tile_width, tile_height = self.tile_dimensions
         
-        tile_width = 64
-        total_width = len(self.tiles) * tile_width
-        
+        y = screen_height - tile_height
         x = self.x_offset
         
         for (index, tile_filename) in enumerate(self.tiles):
             if x + tile_width > 0 or x < screen_width:
                 tile_image = self.tile_images[tile_filename]
                 screen.blit(tile_image, (x, y))
+            
             x += tile_width
         
