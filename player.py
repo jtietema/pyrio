@@ -6,8 +6,8 @@ import os
 from game_entity import GameEntity
 
 class Player(GameEntity):
-    def __init__(self):        
-        GameEntity.__init__(self, (0, 0), (64, 64))
+    def __init__(self, map):
+        GameEntity.__init__(self, (0, 0), (64, 64), map)
         
         self.x_speed = .2
         self.y_speed = .2

@@ -41,4 +41,5 @@ class Map():
             
             if ((tile_screen_x + tile_width > 0 or tile_screen_x < screen_width) and (tile_screen_y + tile_height > 0 or tile_y < screen_height)):
                 tile.render(screen, (tile_screen_x, tile_screen_y))
+    def collisions(self, (x,y), (delta_x, delta_y)):
         
