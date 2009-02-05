@@ -13,12 +13,12 @@ class Map():
         self.y_offset = 0
         
         self.tiles = (
-            Tile('up', (0, 200), self),
-            Tile('up', (64, 200), self),
-            Tile('up', (128, 200), self),
-            Tile('up', (192, 200), self),
-            Tile('up', (256, 200), self),
-            Tile('up', (320, 200), self)
+            Tile('up', (0, 200)),
+            Tile('up', (64, 200)),
+            Tile('up', (128, 200)),
+            Tile('up', (192, 200)),
+            Tile('up', (256, 200)),
+            Tile('up', (320, 200))
         )
         
         self.width = sum([tile.get_width() for tile in self.tiles])

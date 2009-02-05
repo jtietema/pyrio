@@ -2,11 +2,11 @@
 from pygame.locals import *
 import os
 
-from game_entity import GameEntity
+from moveable_entity import MoveableEntity
 
-class Player(GameEntity):
+class Player(MoveableEntity):
     def __init__(self, map):
-        GameEntity.__init__(self, (0, 0), (64, 64), map)
+        MoveableEntity.__init__(self, (0, 0), (64, 64), map)
         
         self.x_speed = .2
         self.y_speed = .2

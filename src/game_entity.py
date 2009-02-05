@@ -2,7 +2,7 @@
 import pygame
 
 class GameEntity():
-    def __init__(self, (x,y), (width, height), map):
+    def __init__(self, (x,y), (width, height)):
         # position
         self.x = x
         self.y = y
@@ -11,8 +11,6 @@ class GameEntity():
         self.width = width
         self.height = height
         
-        self.map = map
-    
     def load_twodirectional_asset(self, path, size):
         right = pygame.image.load(path).convert_alpha()
         right = pygame.transform.smoothscale(right, size)
