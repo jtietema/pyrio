@@ -44,7 +44,7 @@ class GameEntity():
     def render(self, screen, image, (x, y)):
         x -= (image.get_width() / 2)
         y -= (image.get_height() / 2)
-        screen.blit(image, (x, y))=======
+        screen.blit(image, (x, y))
         
     def collision(self, (x,y), (delta_x, delta_y)):
         """Detects if the given move will result in a collision with this object. It 
