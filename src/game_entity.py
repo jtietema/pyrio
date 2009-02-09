@@ -3,8 +3,8 @@ import pygame
 
 class GameEntity():
     # Direction constants
-    DIRECTION_RIGHT = 1
-    DIRECTION_LEFT = 0
+    DIRECTION_RIGHT = 'right'
+    DIRECTION_LEFT = 'left'
     
     # Length of a frame for the sprite animation in milliseconds
     FRAME_LENGTH = 300
@@ -34,10 +34,15 @@ class GameEntity():
     def get_rect(self):
         return self.rect
     
-    def render(self, screen, image, (x, y)):
-        x -= (image.get_width() / 2)
-        y -= (image.get_height() / 2)
-        screen.blit(image, (x, y))
+    def render(self, screen, image, (map_x_offset, map_y_offset)):
+        """Renders the entity when it is in the visible area of the map."""
+        width, height = self.get_size()
+        
+        x_screen = self.rect.x - map_x_offset
+        y_screen = self.rect.y - map_y_offset
+    
+        if ((x_screen + width > 0 or x_screen < width) and (y_screen + height > 0 or y_screen < height)):
+            screen.blit(image, (x_screen, y_screen))
 
     def collide(self, rect):
         """Returns a boolean if the to rects collide"""

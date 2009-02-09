@@ -1,39 +1,28 @@
 
 from pygame.locals import *
 
-from map_serializer import MapSerializer
-
 class Map():
-    def __init__(self, name):
-        self.tiles = MapSerializer.deserialize(name)
-        
-        self.player = None
+    def __init__(self):
+        self.tiles = []
         
         self.x_offset = 0
         self.y_offset = 0
         
+    def postinit(self):
+        """Automatically called by deserialize() method in World, after all tiles have
+        been loaded. This sets some meta information about the map."""
         self.width = max([tile.get_x() + tile.get_width() for tile in self.tiles])
         self.height = max([tile.get_y() + tile.get_height() for tile in self.tiles])
-        
+    
     def update(self, tick_data):
-        screen_width, screen_height = tick_data['screen_size']
-        x, y = self.player.get_position()
+        pass
         
-        self.x_offset = x - (screen_width / 2)
-        self.y_offset = y - (screen_height / 2)
-        
-    def render(self, screen):
+    def render(self, screen, offsets):
         screen_width, screen_height = screen.get_size()
         
         for tile in self.tiles:
             if tile is not None:
-                tile_width, tile_height = tile.get_size()
-                
-                tile_y_screen = tile.get_y() - self.y_offset
-                tile_x_screen = tile.get_x() - self.x_offset
-            
-                if ((tile_x_screen + tile_width > 0 or tile_x_screen < screen_width) and (tile_y_screen + tile_height > 0 or tile_y_screen < screen_height)):
-                    tile.render(screen, (tile_x_screen, tile_y_screen))
+                tile.render(screen, offsets)
                     
     def collisions(self, game_entity, (delta_x, delta_y)):
         new_rect = game_entity.get_rect().move(delta_x, delta_y)
@@ -41,6 +30,6 @@ class Map():
             if tile.collide(new_rect):
                 return True
         return False
-                
-    def add_player(self, player):
-        self.player = player
+    
+    def append_tile(self, tile):
+        self.tiles.append(tile)

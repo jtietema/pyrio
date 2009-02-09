@@ -2,13 +2,13 @@
 from pygame.locals import *
 import os
 
-from moveable_entity import MoveableEntity
+from movable_entity import MovableEntity
 from game_entity import GameEntity
 from animation import Animation
 
-class Player(MoveableEntity):
-    def __init__(self, map):
-        MoveableEntity.__init__(self, (0, 0), (64, 64), map)
+class Player(MovableEntity):
+    def __init__(self, position, map):
+        MovableEntity.__init__(self, position, (64, 64), map)
         
         self.x_speed = .2
         self.y_speed = .2

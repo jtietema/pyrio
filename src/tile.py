@@ -11,5 +11,5 @@ class Tile(GameEntity):
         
         GameEntity.__init__(self, (x, y), self.image.get_size())
     
-    def render(self, screen, screen_position):
-        GameEntity.render(self, screen, self.image, screen_position)
+    def render(self, screen, offsets):
+        GameEntity.render(self, screen, self.image, offsets)
