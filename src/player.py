@@ -9,7 +9,7 @@ class Player(MovableEntity):
     MAX_JUMPING_TIME = 600
     
     def __init__(self, position, map):
-        MovableEntity.__init__(self, position, (56, 64), map)
+        MovableEntity.__init__(self, position, (56, 60), map)
         
         self.x_speed = .2
         self.y_speed = .2
@@ -74,6 +74,8 @@ class Player(MovableEntity):
                 self.rect = self.rect.move(x_delta, y_delta)
             elif not self.map.collisions(self, (0, y_delta)):
                 self.rect = self.rect.move(0, y_delta)
+            elif not self.map.collisions(self, (x_delta, 0)):
+                self.rect = self.rect.move(x_delta, 0)
 
         if self.direction is GameEntity.DIRECTION_LEFT:
             animation = '%s_%s' % (animation_name, 'left')
