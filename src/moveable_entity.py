@@ -5,8 +5,12 @@ class MoveableEntity(GameEntity):
     def __init__(self, (x,y), (width, height), map):
         GameEntity.__init__(self, (x,y), (width, height))
 
+        self.falling = False
         self.map = map
-    
+
+    def check_falling(self, y_delta):
+        return not self.map.collisions(self, (0, y_delta))
+
     def update(self, tick_data):        
         previous_animation = self.animation
 
