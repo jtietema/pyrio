@@ -7,12 +7,19 @@ from animation import Animation
 
 class Player(MovableEntity):
     MAX_JUMPING_TIME = 600
-    
+
+    MIN_X_SPEED = .1
+    MAX_X_SPEED = .35
+
+    MIN_Y_SPEED = .15
+    MAX_Y_SPEED = .5
+
     def __init__(self, position, map):
         MovableEntity.__init__(self, position, (56, 60), map)
         
-        self.x_speed = .2
-        self.y_speed = .2
+        self.x_speed = Player.MIN_X_SPEED
+        self.y_speed = Player.MIN_Y_SPEED
+        self.falling = True
 
         self.jumping = False
         self.jumping_time = 0
@@ -34,18 +41,22 @@ class Player(MovableEntity):
     def process(self, tick_data):
         time_passed = tick_data['time_passed']
         x_delta = time_passed * self.x_speed
-        y_delta = time_passed * self.y_speed
         
         pressed_keys = tick_data['pressed_keys']
         animation_name = 'walk'
         if pressed_keys[K_LEFT]:
             x_delta *= -1
             self.direction = GameEntity.DIRECTION_LEFT
+            if self.x_speed < Player.MAX_X_SPEED:
+                self.x_speed *= 1.007
         elif pressed_keys[K_RIGHT]:
             self.direction = GameEntity.DIRECTION_RIGHT
+            if self.x_speed < Player.MAX_X_SPEED:
+                self.x_speed *= 1.007
         else:
             x_delta = 0
             animation_name = 'stand'
+            self.x_speed = Player.MIN_X_SPEED
         
         if pressed_keys[K_UP] and ((not self.falling and not self.jumping) or
                 self.jumping) and not self.jumping_time > Player.MAX_JUMPING_TIME:
@@ -55,18 +66,30 @@ class Player(MovableEntity):
             self.jumping_time = 0
             y_delta = 0
 
+        if self.jumping and self.y_speed is 0:
+            self.y_speed = Player.MAX_Y_SPEED
+
         if self.jumping:
-            y_delta = time_passed * self.y_speed * -2
+            if self.y_speed > self.MIN_Y_SPEED:
+                self.y_speed /= 1.007
+            y_delta = time_passed * self.y_speed * -1
             self.jumping_time += time_passed
             animation_name = 'jump'
             if self.jumping_time > Player.MAX_JUMPING_TIME:
                 self.jumping = False
                 self.jumping_time = 0
+        elif self.y_speed is 0:
+            self.y_speed = Player.MIN_Y_SPEED
 
-        self.falling = self.check_falling(time_passed * self.y_speed * 2)
+        self.falling = self.check_falling(time_passed * self.y_speed)
         if not self.jumping and self.falling:
-            y_delta = time_passed * self.y_speed * 2
+            y_delta = time_passed * self.y_speed
+            if self.y_speed < Player.MAX_Y_SPEED:
+                self.y_speed *= 1.1
             animation_name = 'fall'
+
+        if not self.jumping and not self.falling:
+            self.y_speed = 0
 
         # Execute the move if there are no collisions
         if (x_delta is not 0 or y_delta is not 0 ):
