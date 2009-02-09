@@ -18,14 +18,14 @@ class Player(MovableEntity):
         self.jumping_time = 0
         
         self.animations = {
-            'stand_left': Animation('player', ('stand_left',), GameEntity.FRAME_LENGTH),
-            'stand_right': Animation('player', ('stand_right',), GameEntity.FRAME_LENGTH),
-            'walk_left': Animation('player', ('walk_left_1', 'walk_left_2'), GameEntity.FRAME_LENGTH),
-            'walk_right': Animation('player', ('walk_right_1', 'walk_right_2'), GameEntity.FRAME_LENGTH),
-            'fall_left' : Animation('player', ('fall_left', ), GameEntity.FRAME_LENGTH),
-            'fall_right': Animation('player', ('fall_right',), GameEntity.FRAME_LENGTH),
-            'jump_left' : Animation('player', ('jump_left', ), GameEntity.FRAME_LENGTH),
-            'jump_right': Animation('player', ('jump_right',), GameEntity.FRAME_LENGTH)
+            'stand_left': Animation('player', ('stand_left',)),
+            'stand_right': Animation('player', ('stand_right',)),
+            'walk_left': Animation('player', ('walk_left_1', 'walk_left_2'), 200),
+            'walk_right': Animation('player', ('walk_right_1', 'walk_right_2'), 200),
+            'fall_left' : Animation('player', ('fall_left', )),
+            'fall_right': Animation('player', ('fall_right',)),
+            'jump_left' : Animation('player', ('jump_left', )),
+            'jump_right': Animation('player', ('jump_right',))
         }
         
         self.animation = self.animations['stand_right']
