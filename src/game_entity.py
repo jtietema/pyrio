@@ -6,12 +6,11 @@ class GameEntity():
     DIRECTION_RIGHT = 'right'
     DIRECTION_LEFT = 'left'
     
-    # Length of a frame for the sprite animation in milliseconds
+    # Default length of a frame for the sprite animation in milliseconds
     FRAME_LENGTH = 300
     
     def __init__(self, (x,y), (width, height)):
         self.rect = pygame.Rect((x - (width / 2),y - (height / 2)), (width,height))
-
         
     def get_x(self):
         return self.rect.centerx

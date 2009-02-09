@@ -4,7 +4,7 @@ import os
 from tile import Tile
 from player import Player
 from map import Map
-from enemy import Enemy
+import enemies
 
 class World():    
     def __init__(self):
@@ -13,7 +13,7 @@ class World():
         
         self.map = self.deserialize('test')
         
-    def update(self, tick_data):        
+    def update(self, tick_data):
         for enemy in self.enemies:
             enemy.update(tick_data)
         
@@ -51,7 +51,9 @@ class World():
         '<': 'left',
         '>': 'right',
         '/': 'left_up',
-        '\\': 'right_up'
+        '\\': 'right_up',
+        '`': 'pipe_ver',
+        '~': 'pipe_up'
     }
 
     # The character used to represent the player.
@@ -59,7 +61,8 @@ class World():
 
     # Characters map to the corresponding enemy's class.
     ENEMY_MAP = {
-        '1': 'Enemy'
+        '1': 'Krush',
+        '2': 'Turtle'
     }
     
     # General settings for tiles. A tile corresponds to one ASCII character in
@@ -94,10 +97,14 @@ class World():
 
             for col_index, char in enumerate(row):
                 if char is World.PLAYER_CHAR:
+                    if self.player is not None:
+                        raise Exception("Player is already on the map.")
+                        return False
+                    
                     self.player = Player((x, y), map)
                     
                 elif char in World.ENEMY_MAP:
-                    enemy_cls = globals()[World.ENEMY_MAP[char]]
+                    enemy_cls = globals()['enemies'].__dict__[World.ENEMY_MAP[char]]
                     enemy = enemy_cls((x, y), map)
                     self.enemies.append(enemy)
                     

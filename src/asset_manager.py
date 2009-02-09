@@ -15,13 +15,20 @@ class AssetManager:
     def get_image(cls, group, name):
         images = cls.loaded_assets['images']
         
-        if group not in images:
-            images[group] = {}
-        if name not in images[group]:
+        print type(group)
+        
+        if not isinstance(group, list) and not isinstance(group, tuple):
+            group = [group]
+        
+        print group
+        
+        group_folder = os.path.join('assets', 'images', *group)
+        
+        if group_folder not in images:
+            images[group_folder] = {}
+        if name not in images[group_folder]:
             # We load the whole group at once for performance reasons. Moreover, images
             # in a group are closely related and will probably be loaded anyway.
-            
-            group_folder = os.path.join('assets', 'images', group)
             config_file = os.path.join(group_folder, 'pkg.cfg')
             
             config = RawConfigParser()
@@ -57,6 +64,7 @@ class AssetManager:
                 if flip_x or flip_y:
                     image = pygame.transform.flip(image, flip_x, flip_y)
                 
-                images[group][section] = image
+                images[group_folder][section] = image
         
-        return images[group][name]
+        return images[group_folder][name]
+        

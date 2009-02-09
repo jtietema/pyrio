@@ -7,16 +7,6 @@ class Enemy(MovableEntity):
     def __init__(self, position, map):
         MovableEntity.__init__(self, position, (64, 64), map)
     
-        self.x_speed = .25
-        
-        self.animations = {
-            'walk_left': Animation('enemy', ('walk_left_1', 'walk_left_2', 'walk_left_3'), 100),
-            'walk_right': Animation('enemy', ('walk_right_1', 'walk_right_2', 'walk_right_3'), 100)
-        }
-        
-        self.direction = GameEntity.DIRECTION_RIGHT
-        self.animation = self.animations['walk_right']
-    
     def process(self, tick_data):
         time_passed = tick_data['time_passed']
         x_delta = time_passed * self.x_speed
