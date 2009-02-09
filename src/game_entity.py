@@ -10,48 +10,40 @@ class GameEntity():
     FRAME_LENGTH = 300
     
     def __init__(self, (x,y), (width, height)):
-        # Position
-        self.x = x
-        self.y = y
-        
-        # Size
-        self.width = width
-        self.height = height
+        self.rect = pygame.Rect((x - (width / 2),y - (height / 2)), (width,height))
+
         
     def get_x(self):
-        return self.x
+        return self.rect.centerx
     
     def get_y(self):
-        return self.y
+        return self.rect.centery
         
     def get_position(self):
-        return (self.x, self.y)
-    
-    def get_real_position(self):
-        return (self.x - (self.width / 2), self.y - (self.height / 2))
+        return (self.rect.centerx, self.rect.centery)
     
     def get_width(self):
-        return self.width
+        return self.rect.width
     
     def get_height(self):
-        return self.height
+        return self.rect.height
         
     def get_size(self):
-        return (self.width, self.height)
+        return (self.rect.width, self.rect.height)
+
+    def get_rect(self):
+        return self.rect
     
     def render(self, screen, image, (x, y)):
         x -= (image.get_width() / 2)
         y -= (image.get_height() / 2)
         screen.blit(image, (x, y))
+
+    def collide(self, rect):
+        """Returns a boolean if the to rects collide"""
+        return self.rect.colliderect(rect)
+
+    def collidedict(self, dict):
+        """Returns (key, value) of the first collision, or None if no collision"""
+        return self.rect.collidedict(dict)
         
-    def collision(self, (x,y), (delta_x, delta_y)):
-        """Detects if the given move will result in a collision with this object. It 
-        returns the possible delta (if no collision returns original delta's)
-        """
-        distance_x = abs(self.x - x) - (self.width / 2)
-        distance_y = abs(self.y - y) - (self.height / 2)
-        
-        if (distance_x < delta_x) and (distance_y < delta_y):
-            delta_x = distance_x
-            delta_y = distance_y
-        return (delta_x, delta_y)

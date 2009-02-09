@@ -51,13 +51,13 @@ class Player(MoveableEntity):
             y_delta *= 1
         else:
             y_delta = 0
-        
-        x_delta, y_delta = self.map.collisions((self.x, self.y), (x_delta, y_delta))
-        self.x += x_delta
-        self.y += y_delta
+
+        # Execute the move if there are no collisions
+        if (x_delta is not 0 or y_delta is not 0 ) and not self.map.collisions(self, (x_delta, y_delta)):
+            self.rect = self.rect.move(x_delta, y_delta)
         
     def render(self, screen):        
-        x_screen = screen.get_width() / 2 - self.width / 2
-        y_screen = screen.get_height() / 2 - self.height / 2
+        x_screen = screen.get_width() / 2 - self.rect.width / 2
+        y_screen = screen.get_height() / 2 - self.rect.height / 2
         screen.blit(self.animation.get_image(), (x_screen, y_screen))
         
