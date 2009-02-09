@@ -40,4 +40,4 @@ class Enemy(MovableEntity):
         self.animation = self.animations['walk_%s' % self.direction]
     
     def render(self, screen, offsets):
-        GameEntity.render(self, screen, self.animation.get_image(), offsets)>>>>>>> other
+        GameEntity.render(self, screen, self.animation.get_image(), offsets)

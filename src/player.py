@@ -5,7 +5,7 @@ from movable_entity import MovableEntity
 from game_entity import GameEntity
 from animation import Animation
 
-class Player(MoveableEntity):
+class Player(MovableEntity):
     MAX_JUMPING_TIME = 600
     
     def __init__(self, position, map):
