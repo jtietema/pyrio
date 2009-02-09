@@ -21,6 +21,7 @@ class Game():
         display_info = pygame.display.Info()
         screen = pygame.display.set_mode((display_info.current_w, display_info.current_h),
             DOUBLEBUF | HWSURFACE | FULLSCREEN, 32)
+        #screen = pygame.display.set_mode((800,600),0,32)
         pygame.display.set_caption('Pygame platform')
         pygame.mouse.set_visible(False)
 
