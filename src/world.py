@@ -13,7 +13,11 @@ class World():
     TILE_MAP = {
         ' ': None,
         '-': 'up',
-        '#': 'middle'
+        '#': 'middle',
+        '<': 'left',
+        '>': 'right',
+        '/': 'left_up',
+        '\\': 'right_up'
     }
     
     # The character used to represent the player
