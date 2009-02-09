@@ -18,8 +18,11 @@ class Game():
     def run(self):
         pygame.init()
 
-        screen = pygame.display.set_mode((800, 600), 0, 32)
+        display_info = pygame.display.Info()
+        screen = pygame.display.set_mode((display_info.current_w, display_info.current_h),
+            DOUBLEBUF | HWSURFACE | FULLSCREEN, 32)
         pygame.display.set_caption('Pygame platform')
+        pygame.mouse.set_visible(False)
 
         clock = pygame.time.Clock()
         
@@ -31,6 +34,9 @@ class Game():
             for event in pygame.event.get():
                 if event.type == QUIT:
                     exit()
+                if event.type == KEYDOWN:
+                    if event.key == K_ESCAPE:
+                        exit()
 
             tick_data['time_passed'] = clock.tick()
             tick_data['pressed_keys'] = pygame.key.get_pressed()
@@ -39,5 +45,5 @@ class Game():
             self.update(tick_data)
             self.render(screen)
 
-            pygame.display.update()
+            pygame.display.flip()
         
