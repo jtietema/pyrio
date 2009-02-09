@@ -6,31 +6,7 @@ from player import Player
 from map import Map
 from enemy import Enemy
 
-class World():
-    MAPS_FOLDER = 'maps'
-    
-    # Characters map to tile images
-    TILE_MAP = {
-        ' ': None,
-        '-': 'up',
-        '#': 'middle',
-        '<': 'left',
-        '>': 'right',
-        '/': 'left_up',
-        '\\': 'right_up'
-    }
-    
-    # The character used to represent the player
-    PLAYER_CHAR = '0'
-
-    # Characters map to the enemy's class
-    ENEMY_MAP = {
-        '1': 'Enemy'
-    }
-
-    TILE_WIDTH = 64
-    TILE_HEIGHT = 64
-    
+class World():    
     def __init__(self):
         self.player = None
         self.enemies = []
@@ -63,20 +39,57 @@ class World():
         
         self.player.render(screen)
     
+        
+    # The folder to find the maps in.
+    MAPS_FOLDER = 'maps'
+
+    # Characters map to tile images.
+    TILE_MAP = {
+        ' ': None,
+        '-': 'up',
+        '#': 'middle',
+        '<': 'left',
+        '>': 'right',
+        '/': 'left_up',
+        '\\': 'right_up'
+    }
+
+    # The character used to represent the player.
+    PLAYER_CHAR = '0'
+
+    # Characters map to the corresponding enemy's class.
+    ENEMY_MAP = {
+        '1': 'Enemy'
+    }
+    
+    # General settings for tiles. A tile corresponds to one ASCII character in
+    # a map file.
+    TILE_WIDTH = 64
+    TILE_HEIGHT = 64
+    
     def deserialize(self, name):
+        """Loads a map from a map configuration file based on the configuration above.
+        Returns a fully initialized Map object upon success, raises an Exception and
+        returns false in case of an error."""
         map = Map()
         
         # Read the map file
         map_file = open(os.path.join(World.MAPS_FOLDER, name + '.map'))
         rows = map_file.read().split('\n')
         map_file.close()
-
+        
+        # TODO: strip leading and trailing white space
+        
+        # Determine the length of the longest row in the map
         max_length = max([len(row) for row in rows])
-        rows = [row.ljust(max_length) for row in rows]
+        
+        # Make sure all rows are padded accordingly, so every row has the same length
+        # rows = [row.ljust(max_length) for row in rows]
 
-        tiles = []
+        # We want to insert the entity in the center of the tile space, so divide by two.
         y = World.TILE_HEIGHT / 2
         for row_index, row in enumerate(rows):
+            # Again, entity will be placed in the center of the tile space.
             x = World.TILE_WIDTH / 2
 
             for col_index, char in enumerate(row):
@@ -100,6 +113,10 @@ class World():
                 x += World.TILE_WIDTH
 
             y += World.TILE_HEIGHT
+        
+        if self.player is None:
+            raise Exception("No player found in map.")
+            return False
         
         map.postinit()
         
