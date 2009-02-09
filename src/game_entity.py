@@ -2,23 +2,21 @@
 import pygame
 
 class GameEntity():
+    # Direction constants
     DIRECTION_RIGHT = 1
     DIRECTION_LEFT = 0
     
+    # Length of a frame for the sprite animation in milliseconds
+    FRAME_LENGTH = 300
+    
     def __init__(self, (x,y), (width, height)):
-        # position
+        # Position
         self.x = x
         self.y = y
         
-        # size
+        # Size
         self.width = width
         self.height = height
-        
-    def load_twodirectional_asset(self, path, size):
-        right = pygame.image.load(path).convert_alpha()
-        right = pygame.transform.smoothscale(right, size)
-        left = pygame.transform.flip(right, True, False)
-        return (left, right)
         
     def get_x(self):
         return self.x

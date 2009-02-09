@@ -7,7 +7,7 @@ from asset_manager import AssetManager
 
 class Tile(GameEntity):
     def __init__(self, name, (x, y)):
-        self.image = AssetManager.get_image('ground', name + '.png')
+        self.image = AssetManager.get_image('ground', name)
         
         GameEntity.__init__(self, (x, y), self.image.get_size())
     

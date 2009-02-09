@@ -19,7 +19,7 @@ class MapSerializer():
     def deserialize(cls, name):
         # Read in the map file
         map_file = open(os.path.join(cls.maps_folder, name + '.map'))
-        rows = map_file.read().split('\n')
+        rows = map_file.read().split('\n')        
         map_file.close()
         
         max_length = max([len(row) for row in rows])
@@ -31,8 +31,8 @@ class MapSerializer():
             x = cls.tile_width / 2
             
             for col_index, char in enumerate(row):
-                if not cls.char_map.has_key(char):
-                    raise Exception('Unknown tile charachter on row %d, column %d: %s' % row_index, col_index, char)
+                if char not in cls.char_map:
+                    raise Exception('Unknown tile charachter on row %d, column %d: %s' % (row_index, col_index, char))
                     
                 tile_name = cls.char_map[char]
                 if tile_name != None:
