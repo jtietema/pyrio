@@ -1,14 +1,15 @@
 
 from pygame.locals import *
 
-from moveable_entity import MoveableEntity
+from movable_entity import MovableEntity
 from game_entity import GameEntity
 from animation import Animation
 
 class Player(MoveableEntity):
     MAX_JUMPING_TIME = 600
-    def __init__(self, map):
-        MoveableEntity.__init__(self, (0, 0), (56, 64), map)
+    
+    def __init__(self, position, map):
+        MovableEntity.__init__(self, position, (56, 64), map)
         
         self.x_speed = .2
         self.y_speed = .2
