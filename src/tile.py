@@ -1,6 +1,4 @@
 
-import pygame
-import os
 
 from game_entity import GameEntity
 from asset_manager import AssetManager

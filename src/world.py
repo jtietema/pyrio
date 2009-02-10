@@ -1,6 +1,5 @@
 
 import os
-from random import randint
 
 from tile import Tile
 from player import Player

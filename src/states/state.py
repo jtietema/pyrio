@@ -1,5 +1,5 @@
 
-from ..game_entity import GameEntity
+from src.game_entity import GameEntity
 
 class State():
     def __init__(self, entity, animations, x_speed, y_speed):

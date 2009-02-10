@@ -1,6 +1,6 @@
 
-from ..state import State
-from ...animation import Animation
+from src.states.state import State
+from src.animation import Animation
 
 from pygame.locals import *
 

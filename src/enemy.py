@@ -1,7 +1,6 @@
 
 from game_entity import GameEntity
 from movable_entity import MovableEntity
-from animation import Animation
 
 class Enemy(MovableEntity):
     def __init__(self, position, map):

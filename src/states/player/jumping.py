@@ -1,7 +1,7 @@
 
-from ..state import State
-from ...animation import Animation
-from ...game_entity import GameEntity
+from src.states.state import State
+from src.animation import Animation
+from src.game_entity import GameEntity
 
 from pygame.locals import *
 
