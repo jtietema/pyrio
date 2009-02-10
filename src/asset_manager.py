@@ -2,6 +2,7 @@
 import pygame
 import os
 from ConfigParser import RawConfigParser
+from image import Image
 
 class AssetManager:
     loaded_assets = {
@@ -59,8 +60,17 @@ class AssetManager:
                 flip_y = config.has_option(section, 'flip_y') and config.getboolean(section, 'flip_y')
                 if flip_x or flip_y:
                     image = pygame.transform.flip(image, flip_x, flip_y)
+
+                # read if offset is present
+                offset_x = 0
+                if config.has_option(section, 'offset_x'):
+                    offset_x = config.getint(section, 'offset_x')
+
+                offset_y = 0
+                if config.has_option(section, 'offset_y'):
+                    offset_y = config.getint(section, 'offset_y')
                 
-                images[group_folder][section] = image
+                images[group_folder][section] = Image(image, (offset_x, offset_y))
         
         return images[group_folder][name]
         

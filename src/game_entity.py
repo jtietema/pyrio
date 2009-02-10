@@ -41,7 +41,8 @@ class GameEntity():
         y_screen = self.rect.y - map_y_offset
     
         if ((x_screen + width > 0 or x_screen < width) and (y_screen + height > 0 or y_screen < height)):
-            screen.blit(image, (x_screen, y_screen))
+            offset_x, offset_y = image.get_offset()
+            screen.blit(image.get_surface(), (x_screen + offset_x, y_screen + offset_y))
 
     def collide(self, rect):
         """Returns a boolean if the to rects collide"""

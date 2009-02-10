@@ -109,5 +109,6 @@ class Player(MovableEntity):
     def render(self, screen):        
         x_screen = screen.get_width() / 2 - self.rect.width / 2
         y_screen = screen.get_height() / 2 - self.rect.height / 2
-        screen.blit(self.animation.get_image(), (x_screen, y_screen))
+        offset_x, offset_y = self.animation.get_image().get_offset()
+        screen.blit(self.animation.get_image().get_surface(), (x_screen + offset_x, y_screen + offset_y))
         
