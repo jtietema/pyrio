@@ -15,12 +15,8 @@ class AssetManager:
     def get_image(cls, group, name):
         images = cls.loaded_assets['images']
         
-        print type(group)
-        
         if not isinstance(group, list) and not isinstance(group, tuple):
             group = [group]
-        
-        print group
         
         group_folder = os.path.join('assets', 'images', *group)
         

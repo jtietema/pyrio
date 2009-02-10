@@ -21,8 +21,7 @@ class Map():
         screen_width, screen_height = screen.get_size()
         
         for tile in self.tiles:
-            if tile is not None:
-                tile.render(screen, offsets)
+            tile.render(screen, offsets)
                     
     def collisions(self, game_entity, (delta_x, delta_y)):
         new_rect = game_entity.get_rect().move(delta_x, delta_y)

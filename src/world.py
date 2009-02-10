@@ -1,5 +1,6 @@
 
 import os
+from random import randint
 
 from tile import Tile
 from player import Player
@@ -91,7 +92,7 @@ class World():
 
         # We want to insert the entity in the center of the tile space, so divide by two.
         y = World.TILE_HEIGHT / 2
-        for row_index, row in enumerate(rows):
+        for row_index, row in enumerate(rows):            
             # Again, entity will be placed in the center of the tile space.
             x = World.TILE_WIDTH / 2
 
@@ -118,7 +119,7 @@ class World():
                     raise Exception('Unknown character on row %d, column %d: %s' % (row_index, col_index, char))
                 
                 x += World.TILE_WIDTH
-
+                
             y += World.TILE_HEIGHT
         
         if self.player is None:
