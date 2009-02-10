@@ -11,6 +11,9 @@ class MovableEntity(GameEntity):
     def check_falling(self, y_delta):
         return not self.map.collisions(self, (0, y_delta))
 
+    def get_map(self):
+        return self.map
+
     def update(self, tick_data):        
         previous_animation = self.animation
 
