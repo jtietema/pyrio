@@ -1,10 +1,11 @@
 
 import os
-from random import randint
+import re
 
 from tile import Tile
 from player import Player
 from map import Map
+from door import Door
 import enemies
 
 class World():    
@@ -53,17 +54,20 @@ class World():
         '>': 'right',
         '/': 'left_up',
         '\\': 'right_up',
-        '`': 'pipe_ver',
-        '~': 'pipe_up'
+        '!': 'pipe_ver',
+        '+': 'pipe_up'
     }
 
     # The character used to represent the player.
     PLAYER_CHAR = '0'
+    
+    # The character that represents the door to complete the level.
+    DOOR_CHAR = '@'
 
     # Characters map to the corresponding enemy's class.
     ENEMY_MAP = {
-        '1': 'Krush',
-        '2': 'Turtle'
+        '1': enemies.Krush,
+        '2': enemies.Turtle
     }
     
     # General settings for tiles. A tile corresponds to one ASCII character in
@@ -82,13 +86,20 @@ class World():
         rows = map_file.read().split('\n')
         map_file.close()
         
-        # TODO: strip leading and trailing white space
+        # Strip any leading whitespace for the complete map, but only by the minimum
+        # amount of whitespace found on any line.
+        p = re.compile(r'^(\s*)')
+        min_leading_space = min([len(p.match(row).group(1)) for row in rows])
+        if min_leading_space > 0:
+            rows = [row[min_leading_space:] for row in rows]
         
         # Determine the length of the longest row in the map
         max_length = max([len(row) for row in rows])
         
         # Make sure all rows are padded accordingly, so every row has the same length
-        # rows = [row.ljust(max_length) for row in rows]
+        rows = [row.ljust(max_length) for row in rows]
+        
+        expected_door_coordinates = None
 
         # We want to insert the entity in the center of the tile space, so divide by two.
         y = World.TILE_HEIGHT / 2
@@ -103,9 +114,24 @@ class World():
                         return False
                     
                     self.player = Player((x, y), map)
+                
+                elif char is World.DOOR_CHAR:
+                    if expected_door_coordinates is None:
+                        expected_door_coordinates = [
+                            (x, y),
+                            (x + World.TILE_WIDTH, y),
+                            (x, y + World.TILE_HEIGHT),
+                            (x + World.TILE_WIDTH, y + World.TILE_HEIGHT)
+                        ]
+                        
+                        door = Door((x + World.TILE_WIDTH / 2, y + World.TILE_HEIGHT / 2))
+                        map.append_tile(door)
+                    elif not (x, y) in expected_door_coordinates:
+                        raise Exception("Invalid door location.")
+                        return False
                     
                 elif char in World.ENEMY_MAP:
-                    enemy_cls = globals()['enemies'].__dict__[World.ENEMY_MAP[char]]
+                    enemy_cls = World.ENEMY_MAP[char]
                     enemy = enemy_cls((x, y), map)
                     self.enemies.append(enemy)
                     

@@ -1,6 +1,8 @@
 
 from pygame.locals import *
 
+from door import Door
+
 class Map():
     def __init__(self):
         self.tiles = []
@@ -25,7 +27,7 @@ class Map():
                     
     def collisions(self, game_entity, (delta_x, delta_y)):
         new_rect = game_entity.get_rect().move(delta_x, delta_y)
-        for tile in self.tiles:
+        for tile in [tile for tile in self.tiles if not isinstance(tile, Door)]:
             if tile.collide(new_rect):
                 return True
         return False
