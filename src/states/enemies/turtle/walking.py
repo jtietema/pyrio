@@ -13,5 +13,12 @@ class WalkingState(MovingState):
     
     def process(self, tick_data):
         MovingState.process(self, tick_data)
-        
+
+        if self.entity.collides_with_player():
+            if self.entity.is_hit_by_player():
+                self.entity.bounce_player(tick_data)
+                return 'shell'
+
+            self.entity.hit_player(tick_data)
+
         return 'walk'
