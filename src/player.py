@@ -1,10 +1,8 @@
 
-import sys
-
 from pygame.locals import *
+import pygame
 
 from movable_entity import MovableEntity
-from game_entity import GameEntity
 
 from states.player.walking import WalkingState
 from states.player.standing import StandingState
@@ -36,6 +34,13 @@ class Player(MovableEntity):
         animation = self.get_animation()
         offset_x, offset_y = animation.get_image().get_offset()
         screen.blit(animation.get_image().get_surface(), (x_screen + offset_x, y_screen + offset_y))
+        self.render_debug(screen)
+
+    def render_debug(self, screen):
+        if self.debug:
+            x_screen = screen.get_width() / 2 - self.rect.width / 2
+            y_screen = screen.get_height() / 2 - self.rect.height / 2
+            pygame.draw.rect(screen, (0,255,0), (x_screen, y_screen, self.rect.w, self.rect.h), 1)
     
     def hit(self, tick_data):
         """Called by an enemy when the player gets hit."""

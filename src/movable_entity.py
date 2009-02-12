@@ -62,6 +62,9 @@ class MovableEntity(GameEntity):
             animation.reset()
         
         animation.process(tick_data['time_passed'])
+
+        # check for debug mode
+        self.debug = tick_data['debug']
     
     def render(self, screen, map_offsets):
         GameEntity.render(self, screen, self.get_animation().get_image(), map_offsets)

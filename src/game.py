@@ -12,6 +12,7 @@ class Game():
         self.lives = 3
         self.score = 0
         self.pause = False
+        self.debug = False
 
     def create(self):
         self.world = World()
@@ -70,6 +71,11 @@ class Game():
                             self.pause = True
                     if event.key == K_ESCAPE:
                         exit()
+                    if event.key == K_d:
+                        if self.debug:
+                            self.debug = False
+                        else:
+                            self.debug = True
 
             tick_data['time_passed'] = clock.tick()
             tick_data['actions'] = self.process_controls(actions, joystick)
@@ -78,6 +84,7 @@ class Game():
             tick_data['lives'] = self.lives
             tick_data['killed'] = False
             tick_data['pause'] = self.pause
+            tick_data['debug'] = self.debug
 
             self.update(tick_data)
 
