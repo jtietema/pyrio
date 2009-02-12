@@ -2,31 +2,25 @@ from animation import Animation
 from enemy import Enemy
 from game_entity import GameEntity
 
+from states.enemies.krush.walking import WalkingState as KrushWalkingState
+from states.enemies.krush.flat import FlatState as KrushFlatState
+from states.enemies.turtle.walking import WalkingState as TurtleWalkingState
+
 class Krush(Enemy):
     def __init__(self, position, map):
         Enemy.__init__(self, position, map)
         
-        self.x_speed = .25
-        
-        self.animations = {
-            'walk_left': Animation(('enemies', 'krush'), ('walk_left_1', 'walk_left_2', 'walk_left_3'), 100),
-            'walk_right': Animation(('enemies', 'krush'), ('walk_right_1', 'walk_right_2', 'walk_right_3'), 100)
+        self.states = {
+            'walk': KrushWalkingState(self),
+            'flat': KrushFlatState(self)
         }
-        
-        self.direction = GameEntity.DIRECTION_RIGHT
-        self.animation = self.animations['walk_right']
-
+        self.currentState = self.states['walk']
 
 class Turtle(Enemy):
     def __init__(self, position, map):
         Enemy.__init__(self, position, map)
-
-        self.x_speed = .1
-
-        self.animations = {
-            'walk_left': Animation(('enemies', 'turtle'), ('walk_left_1', 'walk_left_2', 'walk_left_3'), 150),
-            'walk_right': Animation(('enemies', 'turtle'), ('walk_right_1', 'walk_right_2', 'walk_right_3'), 150)
+        
+        self.states = {
+            'walk': TurtleWalkingState(self)
         }
-
-        self.direction = GameEntity.DIRECTION_RIGHT
-        self.animation = self.animations['walk_right']
+        self.currentState = self.states['walk']

@@ -10,6 +10,10 @@ class State():
         self.entity = entity
 
     def get_animation(self, direction):
+        """Returns the animation object based on the entity's direction passed in.
+        This should be overwritten if animations are named other than 'left' and 'right'.
+        Also, consider using caching the current animation if you implement complex logic
+        here, as this method is called multiple times per frame."""
         if direction is GameEntity.DIRECTION_LEFT:
             return self.animations['left']
         else:
@@ -18,15 +22,7 @@ class State():
     def update(self, tick_data):
         return self.process(tick_data)
 
-    def move(self, x_delta, y_delta):
-        # Execute the move if there are no collisions
-        if (x_delta is not 0 or y_delta is not 0 ):
-            if not self.entity.get_map().collisions(self.entity, (x_delta, y_delta)):
-                self.entity.rect = self.entity.rect.move(x_delta, y_delta)
-            elif not self.entity.get_map().collisions(self.entity, (0, y_delta)):
-                self.entity.rect = self.entity.rect.move(0, y_delta)
-            elif not self.entity.get_map().collisions(self.entity, (x_delta, 0)):
-                self.entity.rect = self.entity.rect.move(x_delta, 0)
-
     def reset(self):
+        """Resets the state to its starting point. Automatically called by MovableEntity
+        when switching states."""
         pass

@@ -37,7 +37,7 @@ class JumpingState(State):
         y_delta = time_passed * self.y_speed * -1
         self.jumping_time += time_passed
 
-        self.move(x_delta, y_delta)
+        self.entity.move(x_delta, y_delta)
         return 'jumping'
 
     def reset(self):
