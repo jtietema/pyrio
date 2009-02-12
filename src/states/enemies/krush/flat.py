@@ -1,7 +1,7 @@
 from src.animation import Animation
-from src.states.enemies.state import State
+from src.states.enemies.moving import MovingState
 
-class FlatState(State):
+class FlatState(MovingState):
     def __init__(self, enemy):
         animations = {
             'left': Animation(('enemies', 'krush'), ('flat_left_1', 'flat_left_2', 'flat_left_3'), 100),
@@ -9,16 +9,27 @@ class FlatState(State):
         }
         
         self.counter = 0
-        self.flat_time = 5000
+        self.max_flat_time = 5000
         
-        State.__init__(self, enemy, animations, .1, 0)
+        MovingState.__init__(self, enemy, animations, .1, 0)
     
-    def process(self, tick_data):
+    def process(self, tick_data):        
+        MovingState.process(self, tick_data)
+        
         self.counter += tick_data['time_passed']
         
-        if self.counter > self.flat_time:
+        if self.counter > self.max_flat_time:
             return 'walk'
         
-        self.check_collisions()
+        if self.entity.collides_with_player():
+            if self.entity.is_hit_by_player():
+                self.entity.bounce_player(tick_data)
+                self.counter = 0
         
         return 'flat'
+    
+    def reset(self):
+        self.counter = 0
+    
+    def get_size(self):
+        return (64, 30)

@@ -12,12 +12,15 @@ class MovableEntity(GameEntity):
     
     def __init__(self, (x,y), (width, height), map):
         GameEntity.__init__(self, (x,y), (width, height))
-
-        self.falling = False
         self.map = map
+        
+        self.default_size = (width, height)
         
         # Default direction of all entities to right.
         self.direction = GameEntity.DIRECTION_RIGHT
+    
+    def is_falling(self):
+        return self.falling
 
     def check_falling(self, y_delta):
         """Returns true if the entity is currently supposed to fall, i.e. there are no
@@ -27,9 +30,14 @@ class MovableEntity(GameEntity):
     def get_map(self):
         return self.map
     
+    def get_previous_rect(self):
+        """Returns the entity's rectangle position before processing the new frame."""
+        return self.previous_rect
+    
     def update(self, tick_data):
         """Updates the entity's state by calling the current state's update method.
         Also takes care of resetting the state and/or the animation if applicable."""
+        self.previous_rect = self.rect
         
         # Store previous animation for later access.
         previous_animation = self.get_animation()
@@ -45,6 +53,8 @@ class MovableEntity(GameEntity):
         self.currentState = self.states[next_state]
         if self.currentState is not previous_state:
             self.currentState.reset()
+            size = self.currentState.get_size()
+            self.set_size(size)
             
         # Get the new animation and check to see if it has changed.
         animation = self.get_animation()

@@ -26,3 +26,6 @@ class State():
         """Resets the state to its starting point. Automatically called by MovableEntity
         when switching states."""
         pass
+    
+    def get_size(self):
+        return self.entity.default_size

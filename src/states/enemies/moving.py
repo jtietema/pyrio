@@ -1,8 +1,8 @@
 
 from src.game_entity import GameEntity
-from src.states.enemies.state import State
+from src.states.state import State
 
-class WalkingState(State):
+class MovingState(State):
     def __init__(*args):
         State.__init__(*args)
     
@@ -17,5 +17,3 @@ class WalkingState(State):
         # Flip the direction if the requested movement could not be performed.
         if not self.entity.move(x_delta, 0):
             self.entity.direction = GameEntity.DIRECTION_RIGHT if heading_left else GameEntity.DIRECTION_LEFT
-        
-        return 'walk'

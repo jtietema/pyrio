@@ -8,7 +8,7 @@ from states.enemies.turtle.walking import WalkingState as TurtleWalkingState
 
 class Krush(Enemy):
     def __init__(self, position, map):
-        Enemy.__init__(self, position, map)
+        Enemy.__init__(self, position, (64, 50), map)
         
         self.states = {
             'walk': KrushWalkingState(self),
@@ -18,7 +18,7 @@ class Krush(Enemy):
 
 class Turtle(Enemy):
     def __init__(self, position, map):
-        Enemy.__init__(self, position, map)
+        Enemy.__init__(self, position, (64, 64), map)
         
         self.states = {
             'walk': TurtleWalkingState(self)

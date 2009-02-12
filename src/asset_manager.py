@@ -38,6 +38,8 @@ class AssetManager:
                 return False
             
             for section in sections:
+                if section == '__default__': continue
+                
                 file_path = os.path.join(group_folder, config.get(section, 'file'))
                 image = pygame.image.load(file_path).convert_alpha()
                 
@@ -69,6 +71,8 @@ class AssetManager:
                 offset_y = 0
                 if config.has_option(section, 'offset_y'):
                     offset_y = config.getint(section, 'offset_y')
+                elif config.has_option('__default__', 'offset_y'):
+                    offset_y = config.getint('__default__', 'offset_y')
                 
                 images[group_folder][section] = Image(image, (offset_x, offset_y))
         

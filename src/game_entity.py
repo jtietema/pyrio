@@ -29,6 +29,9 @@ class GameEntity():
         
     def get_size(self):
         return (self.rect.width, self.rect.height)
+    
+    def set_size(self, size):
+        self.rect.size = size
 
     def get_rect(self):
         return self.rect
@@ -45,7 +48,7 @@ class GameEntity():
             screen.blit(image.get_surface(), (x_screen + offset_x, y_screen + offset_y))
 
     def collide(self, rect):
-        """Returns a boolean if the to rects collide"""
+        """Returns a boolean if the two rects collide"""
         return self.rect.colliderect(rect)
 
     def collidedict(self, dict):

@@ -10,27 +10,18 @@ from states.player.walking import WalkingState
 from states.player.standing import StandingState
 from states.player.jumping import JumpingState
 from states.player.falling import FallingState
+from states.player.bouncing import BouncingState
 
 class Player(MovableEntity):
-    MAX_JUMPING_TIME = 600
-
-    MIN_X_SPEED = .1
-    MAX_X_SPEED = .35
-
-    MIN_Y_SPEED = .15
-    MAX_Y_SPEED = .5
-
     def __init__(self, position, map):
         MovableEntity.__init__(self, position, (56, 60), map)
-        
-        # Player starts in falling state
-        self.falling = True
 
         self.states = {
             'walking' : WalkingState(self),
             'standing': StandingState(self),
             'jumping' : JumpingState(self),
-            'falling' : FallingState(self)
+            'falling' : FallingState(self),
+            'bouncing': BouncingState(self)
         }
         self.currentState = self.states['falling']
     
@@ -49,4 +40,11 @@ class Player(MovableEntity):
     def hit(self, tick_data):
         """Called by an enemy when the player gets hit."""
         tick_data['killed'] = True
+    
+    def bounce(self, tick_data, bottom):
+        self.rect.bottom = bottom
+        self.currentState = self.states['bouncing']
+        self.currentState.reset()
+        self.get_animation().reset()
         
+        self.update(tick_data)
