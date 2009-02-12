@@ -50,11 +50,11 @@ class MovableEntity(GameEntity):
         
         # Change the current state to the new one, reset the state if a
         # new one has been set.
-        self.currentState = self.states[next_state]
-        if self.currentState is not previous_state:
-            self.currentState.reset()
-            size = self.currentState.get_size()
-            self.set_size(size)
+        next_state = self.states[next_state]
+        if next_state is not previous_state:
+            previous_state.exit()
+            next_state.enter()
+            self.currentState = next_state
             
         # Get the new animation and check to see if it has changed.
         animation = self.get_animation()

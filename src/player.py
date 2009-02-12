@@ -48,8 +48,9 @@ class Player(MovableEntity):
     
     def bounce(self, tick_data, bottom):
         self.rect.bottom = bottom
+        self.currentState.exit()
         self.currentState = self.states['bouncing']
-        self.currentState.reset()
+        self.currentState.enter()
         self.get_animation().reset()
         
         self.update(tick_data)

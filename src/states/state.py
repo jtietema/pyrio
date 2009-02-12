@@ -22,9 +22,13 @@ class State():
     def update(self, tick_data):
         return self.process(tick_data)
 
-    def reset(self):
+    def enter(self):
         """Resets the state to its starting point. Automatically called by MovableEntity
         when switching states."""
+        pass
+    
+    def exit(self):
+        """Called when leaving the state."""
         pass
     
     def get_size(self):
