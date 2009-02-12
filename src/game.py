@@ -5,23 +5,31 @@ from sys import exit
 
 from world import World
 from hud import Hud
+from menu import Menu
 
 class Game():
     def __init__(self):
         self.lives = 3
         self.score = 0
+        self.pause = False
 
     def create(self):
         self.world = World()
         self.hud = Hud()
+        self.menu = Menu()
         
     def update(self, tick_data):
-        self.world.update(tick_data)
-        self.hud.update(tick_data)
+        if self.pause:
+            self.menu.update(tick_data)
+        else:
+            self.world.update(tick_data)
+            self.hud.update(tick_data)
         
     def render(self, screen):
         self.world.render(screen)
         self.hud.render(screen)
+        if self.pause:
+            self.menu.render(screen)
         
     def run(self):
         pygame.init()
@@ -55,6 +63,11 @@ class Game():
                 if event.type == QUIT:
                     exit()
                 if event.type == KEYDOWN:
+                    if event.key == K_q:
+                        if self.pause:
+                            self.pause = False
+                        else:
+                            self.pause = True
                     if event.key == K_ESCAPE:
                         exit()
 
@@ -64,10 +77,12 @@ class Game():
             tick_data['score'] = self.score
             tick_data['lives'] = self.lives
             tick_data['killed'] = False
+            tick_data['pause'] = self.pause
 
             self.update(tick_data)
 
             self.score = tick_data['score']
+            self.pause = tick_data['pause']
             
             self.render(screen)
 
@@ -93,12 +108,25 @@ class Game():
         if pressed_keys[K_RIGHT]:
             actions.set_x(1.0)
 
+        if pressed_keys[K_UP]:
+            actions.set_y(1.0)
+
+        if pressed_keys[K_DOWN]:
+            actions.set_y(-1.0)
+
+        if pressed_keys[K_RETURN]:
+            actions.set_select(True)
+
         # process gamepad / joystick
         if joystick is not None:
-            if joystick.get_button(1):
+            if joystick.get_button(0):
                 actions.set_jump(True)
+            if joystick.get_button(1):
+                actions.set_select(True)
             if joystick.get_axis(0) > .05 or joystick.get_axis(0) < -.05:
                 actions.set_x(joystick.get_axis(0))
+            if joystick.get_axis(1) > .05 or joystick.get_axis(1) < -.05:
+                actions.set_y(-1 * joystick.get_axis(1))
                 
         return actions
 
@@ -113,16 +141,23 @@ class Actions():
     """
     def __init__(self):
         self.x = 0
+        self.y = 0
         self.jump = False
+        self.select = False
 
     def set_x(self, x):
-        """
-        Must be a float between 1 (right) and -1 (left)
-        """
+        """Must be a float between 1 (right) and -1 (left)"""
         self.x = x
+
+    def set_y(self, y):
+        """Must be a float between 1 (right) and -1 (left)"""
+        self.y = y
 
     def set_jump(self, boolean):
         self.jump = boolean
 
     def reset(self):
         self.__init__()
+
+    def set_select(self, boolean):
+        self.select = True
