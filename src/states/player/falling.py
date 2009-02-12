@@ -18,12 +18,18 @@ class FallingState(State):
         time_passed = tick_data['time_passed']
         actions = tick_data['actions']
 
+        y_delta = time_passed * self.y_speed
+        
         # check if still falling
         if not self.entity.check_falling(time_passed * self.y_speed):
-            if actions.x is not 0:
-                return 'walking'
+            # check if we really can't fall another pixel
+            if self.entity.check_falling(1):
+                y_delta = 1
             else:
-                return 'standing'
+                if actions.x is not 0:
+                    return 'walking'
+                else:
+                    return 'standing'
 
         # continue falling
         x_delta = self.x_speed * time_passed * actions.x
@@ -33,7 +39,6 @@ class FallingState(State):
             self.entity.direction = GameEntity.DIRECTION_RIGHT
         else:
             x_delta = 0
-        y_delta = time_passed * self.y_speed
 
         self.entity.move(x_delta, y_delta)
         return 'falling'
