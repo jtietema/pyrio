@@ -28,7 +28,17 @@ class Game():
         clock = pygame.time.Clock()
         
         self.create_world()
+
         actions = Actions()
+
+        # setup joystick/gamepad if present
+        joystick = None
+        if pygame.joystick.get_count() > 0:
+            # at least one joystick is found
+            print str(pygame.joystick.get_count()) + ' joystick(s) found'
+            joystick = pygame.joystick.Joystick(0)
+            joystick.init()
+            print 'Joystick found with ' + str(joystick.get_numaxes()) + ' axes and ' + str(joystick.get_numbuttons()) + ' buttons'
 
         while True:
             tick_data = {}
@@ -41,7 +51,7 @@ class Game():
                         exit()
 
             tick_data['time_passed'] = clock.tick()
-            tick_data['actions'] = self.process_controls(actions)
+            tick_data['actions'] = self.process_controls(actions, joystick)
             tick_data['screen_size'] = screen.get_size()
 
             self.update(tick_data)
@@ -49,12 +59,12 @@ class Game():
 
             pygame.display.flip()
 
-    def process_controls(self, actions):
+    def process_controls(self, actions, joystick):
         """
         Maps all the supported controls to a common format.
         """
         actions.reset()
-
+        # process the keyboard controls
         pressed_keys = pygame.key.get_pressed()
         if pressed_keys[K_UP]:
             actions.set_jump(True)
@@ -65,6 +75,13 @@ class Game():
         if pressed_keys[K_RIGHT]:
             actions.set_x(1.0)
 
+        # process gamepad / joystick
+        if joystick is not None:
+            if joystick.get_button(1):
+                actions.set_jump(True)
+            if joystick.get_axis(0) > .05 or joystick.get_axis(0) < -.05:
+                actions.set_x(joystick.get_axis(0))
+                
         return actions
 
 class Actions():
