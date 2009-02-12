@@ -34,8 +34,10 @@ class Map():
                 return True
         return False
     
-    def get_door(self):
-        return self.door
+    def is_finished(self, player):
+        if self.door is not None:
+            return self.door.get_rect().contains(player.get_rect())
+        return False
     
     def append_tile(self, tile):
         if isinstance(tile, Door):

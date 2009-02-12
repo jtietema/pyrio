@@ -24,7 +24,7 @@ class World():
         
         self.map.update(tick_data)
         
-        if self.map.get_door().get_rect().contains(self.player.get_previous_rect()):
+        if self.map.is_finished(self.player):
             print 'Level complete'
             sys.exit()
         
