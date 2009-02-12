@@ -9,10 +9,11 @@ from hud import Hud
 class Game():
     def __init__(self):
         self.lives = 3
+        self.score = 0
 
     def create(self):
         self.world = World()
-        self.hud = Hud(self)
+        self.hud = Hud()
         
     def update(self, tick_data):
         self.world.update(tick_data)
@@ -60,8 +61,17 @@ class Game():
             tick_data['time_passed'] = clock.tick()
             tick_data['actions'] = self.process_controls(actions, joystick)
             tick_data['screen_size'] = screen.get_size()
+            tick_data['score'] = self.score
+            tick_data['lives'] = self.lives
+            tick_data['killed'] = False
 
             self.update(tick_data)
+
+            self.score = tick_data['score']
+            if tick_data['killed']:
+                self.lives -= 1
+                self.world = World()
+            
             self.render(screen)
 
             pygame.display.flip()
