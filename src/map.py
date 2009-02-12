@@ -27,8 +27,12 @@ class Map():
         for tile in self.tiles:
             tile.render(screen, offsets)
                     
-    def collisions(self, game_entity, (delta_x, delta_y)):
+    def collisions(self, game_entity, (delta_x, delta_y)):        
         new_rect = game_entity.get_rect().move(delta_x, delta_y)
+        
+        if new_rect.left < 0 or new_rect.right + new_rect.width > self.width:
+            return True
+                
         for tile in self.tiles:
             if not isinstance(tile, Door) and tile.collide(new_rect):
                 return True
