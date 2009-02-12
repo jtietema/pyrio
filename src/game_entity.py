@@ -11,6 +11,7 @@ class GameEntity():
     
     def __init__(self, (x,y), (width, height)):
         self.rect = pygame.Rect((x - (width / 2),y - (height / 2)), (width,height))
+        self.debug = False
         
     def get_x(self):
         return self.rect.centerx
@@ -46,6 +47,7 @@ class GameEntity():
         if ((x_screen + width > 0 or x_screen < width) and (y_screen + height > 0 or y_screen < height)):
             offset_x, offset_y = image.get_offset()
             screen.blit(image.get_surface(), (x_screen + offset_x, y_screen + offset_y))
+            self.render_debug(screen, (map_x_offset, map_y_offset))
 
     def collide(self, rect):
         """Returns a boolean if the two rects collide"""
@@ -54,4 +56,12 @@ class GameEntity():
     def collidedict(self, dict):
         """Returns (key, value) of the first collision, or None if no collision"""
         return self.rect.collidedict(dict)
+
+    def render_debug(self, screen, (map_x_offset, map_y_offset)):
+        if self.debug:
+            rect_x = self.rect.x - map_x_offset
+            rect_y = self.rect.y - map_y_offset
+            rect_w = self.rect.width
+            rect_h = self.rect.height
+            pygame.draw.rect(screen, (255,0,0), (rect_x, rect_y, rect_w, rect_h), 1)
         
