@@ -2,7 +2,7 @@
 from src.game_entity import GameEntity
 
 class State():
-    def __init__(self, entity, animations, x_speed, y_speed):
+    def __init__(self, entity, animations, x_speed=0, y_speed=0):
         self.animations = animations
         self.x_speed = x_speed
         self.y_speed = y_speed
