@@ -10,13 +10,13 @@ class StandingState(State):
                 'left': Animation('player', ('stand_left',)),
                 'right': Animation('player', ('stand_right',))
         }
-        State.__init__(self, player, animations, .1, .15)
+        State.__init__(self, player, animations, .3, .5)
 
     def process(self, tick_data):
-        pressed_keys = tick_data['pressed_keys']
-        if pressed_keys[K_LEFT] or pressed_keys[K_RIGHT]:
+        actions = tick_data['actions']
+        if actions.x is not 0:
             return 'walking'
-        elif pressed_keys[K_UP]:
+        elif actions.jump:
             return 'jumping'
         else:
             return 'standing'
