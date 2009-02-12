@@ -20,6 +20,12 @@ class WalkingState(State):
         x_delta = time_passed * self.x_speed * actions.x
 
         next_state = 'walking'
+
+        # check if falling
+        if self.entity.check_falling(time_passed * self.y_speed):
+            return 'falling'
+
+        # process walking
         if actions.x < 0:
             self.entity.direction = GameEntity.DIRECTION_LEFT
         elif actions.x > 0:
@@ -28,6 +34,7 @@ class WalkingState(State):
             x_delta = 0
             next_state = 'standing'
 
+        # check if jumping
         if actions.jump:
             next_state = 'jumping'
 
