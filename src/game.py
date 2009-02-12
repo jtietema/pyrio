@@ -28,6 +28,7 @@ class Game():
         clock = pygame.time.Clock()
         
         self.create_world()
+        actions = Actions()
 
         while True:
             tick_data = {}
@@ -40,11 +41,49 @@ class Game():
                         exit()
 
             tick_data['time_passed'] = clock.tick()
-            tick_data['pressed_keys'] = pygame.key.get_pressed()
+            tick_data['actions'] = self.process_controls(actions)
             tick_data['screen_size'] = screen.get_size()
 
             self.update(tick_data)
             self.render(screen)
 
             pygame.display.flip()
-        
+
+    def process_controls(self, actions):
+        """
+        Maps all the supported controls to a common format.
+        """
+        actions.reset()
+
+        pressed_keys = pygame.key.get_pressed()
+        if pressed_keys[K_UP]:
+            actions.set_jump(True)
+
+        if pressed_keys[K_LEFT]:
+            actions.set_x(-1.0)
+
+        if pressed_keys[K_RIGHT]:
+            actions.set_x(1.0)
+
+        return actions
+
+class Actions():
+    """
+    Simple class to hold all the actions the player can do.  In the rest of the game you
+    are suppossed to use this class instead off reading the controls directly.
+    """
+    def __init__(self):
+        self.x = 0
+        self.jump = False
+
+    def set_x(self, x):
+        """
+        Must be a float between 1 (right) and -1 (left)
+        """
+        self.x = x
+
+    def set_jump(self, boolean):
+        self.jump = boolean
+
+    def reset(self):
+        self.__init__()
