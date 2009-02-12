@@ -16,10 +16,10 @@ class World():
         self.map = self.deserialize('test')
         
     def update(self, tick_data):
+        self.player.update(tick_data)
+        
         for enemy in self.enemies:
             enemy.update(tick_data)
-        
-        self.player.update(tick_data)
         
         self.map.update(tick_data)
         
@@ -110,7 +110,7 @@ class World():
             for col_index, char in enumerate(row):
                 if char is World.PLAYER_CHAR:
                     if self.player is not None:
-                        raise Exception("Player is already on the map.")
+                        raise Exception("Player is already placed elsewhere.")
                         return False
                     
                     self.player = Player((x, y), map)
@@ -127,7 +127,7 @@ class World():
                         door = Door((x + World.TILE_WIDTH / 2, y + World.TILE_HEIGHT / 2))
                         map.append_tile(door)
                     elif not (x, y) in expected_door_coordinates:
-                        raise Exception("Invalid door location.")
+                        raise Exception("Invalid door location on row %d, column %d." % (row_index, col_index))
                         return False
                     
                 elif char in World.ENEMY_MAP:
@@ -151,6 +151,11 @@ class World():
         if self.player is None:
             raise Exception("No player found in map.")
             return False
+        
+        # Make sure all the enemies get a reference to the player object for collision
+        # detection.
+        for enemy in self.enemies:
+            enemy.set_player(self.player)
         
         map.postinit()
         

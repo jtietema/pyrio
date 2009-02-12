@@ -1,4 +1,6 @@
 
+import sys
+
 from pygame.locals import *
 
 from movable_entity import MovableEntity
@@ -21,11 +23,8 @@ class Player(MovableEntity):
     def __init__(self, position, map):
         MovableEntity.__init__(self, position, (56, 60), map)
         
-        self.x_speed = Player.MIN_X_SPEED
-        self.y_speed = Player.MIN_Y_SPEED
+        # Player starts in falling state
         self.falling = True
-
-        self.direction = GameEntity.DIRECTION_RIGHT
 
         self.states = {
             'walking' : WalkingState(self),
@@ -34,20 +33,20 @@ class Player(MovableEntity):
             'falling' : FallingState(self)
         }
         self.currentState = self.states['falling']
-        self.animation = self.currentState.get_animation(self.direction)
+    
+    def update(self, tick_data):
+        MovableEntity.update(self, tick_data)
         
-    def process(self, tick_data):
-        next_state = self.currentState.update(tick_data)
-        self.animation = self.currentState.get_animation(self.direction)
-        # remember last state to detect state change
-        previous_state = self.currentState
-        self.currentState = self.states[next_state]
-        if self.currentState is not previous_state:
-            self.currentState.reset()
-        
-    def render(self, screen):        
+    def render(self, screen):
+        """Always renders the player in the center of the screen."""
         x_screen = screen.get_width() / 2 - self.rect.width / 2
         y_screen = screen.get_height() / 2 - self.rect.height / 2
-        offset_x, offset_y = self.animation.get_image().get_offset()
-        screen.blit(self.animation.get_image().get_surface(), (x_screen + offset_x, y_screen + offset_y))
+        
+        animation = self.get_animation()
+        offset_x, offset_y = animation.get_image().get_offset()
+        screen.blit(animation.get_image().get_surface(), (x_screen + offset_x, y_screen + offset_y))
+    
+    def hit(self, tick_data):
+        """Called by an enemy when the player gets hit."""
+        tick_data['killed'] = True
         

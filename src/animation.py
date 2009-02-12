@@ -29,6 +29,9 @@ class Animation():
         self.counter_max = self.num_images * self.frame_length - 1
     
     def process(self, time_passed):
+        """Determines the current image of the animation to display based on the time
+        passed since the previous call. Corrects for overflow or underflow of the counter
+        and automatically flips the direction of the image traversal if either occurs."""
         if self.num_images is 1:
             # No point in calculating the current image if there is only one image.
             self.image = self.images[0]

@@ -35,5 +35,5 @@ class FallingState(State):
             x_delta = 0
         y_delta = time_passed * self.y_speed
 
-        self.move(x_delta, y_delta)
+        self.entity.move(x_delta, y_delta)
         return 'falling'

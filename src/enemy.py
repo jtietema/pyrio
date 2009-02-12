@@ -5,28 +5,24 @@ from movable_entity import MovableEntity
 class Enemy(MovableEntity):
     def __init__(self, position, map):
         MovableEntity.__init__(self, position, (64, 64), map)
+        
+        self.player = None
     
-    def process(self, tick_data):
-        time_passed = tick_data['time_passed']
-        x_delta = time_passed * self.x_speed
-        
-        if self.direction is GameEntity.DIRECTION_LEFT:
-            x_delta *= -1
-        
-        y_delta = 0
-        
-        if x_delta is not 0 or y_delta is not 0:
-            if self.map.collisions(self, (x_delta, y_delta)):
-                # Flip the direction because of collisions
-                if self.direction is GameEntity.DIRECTION_LEFT:
-                    self.direction = GameEntity.DIRECTION_RIGHT
-                else:
-                    self.direction = GameEntity.DIRECTION_LEFT
-            else:
-                # Otherwise, move the enemy to the desired location
-                self.rect = self.rect.move(x_delta, y_delta)
-        
-        self.animation = self.animations['walk_%s' % self.direction]
+    def update(self, tick_data):
+        MovableEntity.update(self, tick_data)
     
-    def render(self, screen, offsets):
-        GameEntity.render(self, screen, self.animation.get_image(), offsets)
+    def render(self, screen, map_offsets):
+        MovableEntity.render(self, screen, map_offsets)
+
+    def set_player(self, player):
+        """Adds a reference to the player object to the enemy after the world has been
+        initialized."""
+        self.player = player
+    
+    def collides_with_player(self):
+        """Detects if this enemy collides with the player."""
+        return self.collide(self.player.get_rect())
+    
+    def hit_player(self, tick_data):
+        """Hits the player entity."""
+        self.player.hit(tick_data)

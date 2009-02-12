@@ -38,6 +38,6 @@ class WalkingState(State):
         if actions.jump:
             next_state = 'jumping'
 
-        self.move(x_delta, 0)
+        self.entity.move(x_delta, 0)
 
         return next_state
