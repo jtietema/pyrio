@@ -20,6 +20,8 @@ class Animation():
         self.images = []
         for name in images:
             self.images.append(AssetManager.get_image(image_group, name))
+
+        self.image = self.images[0]
         
         # Image number counter cache.
         self.num_images = len(self.images)

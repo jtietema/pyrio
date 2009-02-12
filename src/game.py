@@ -11,7 +11,7 @@ class Game():
     def __init__(self):
         self.lives = 3
         self.score = 0
-        self.pause = False
+        self.pause = True
         self.debug = False
 
     def create(self):

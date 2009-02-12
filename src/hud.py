@@ -10,7 +10,8 @@ class Hud():
         self.scoreImage = AssetManager.get_image('game', 'score')
 
         # data needed from tick_data
-        self.screen_size = None
+        display_info = pygame.display.Info()
+        self.screen_size = (display_info.current_w, display_info.current_h)
         self.lives = 0
         self.score = 0
 
