@@ -68,11 +68,12 @@ class Game():
             self.update(tick_data)
 
             self.score = tick_data['score']
+            
+            self.render(screen)
+
             if tick_data['killed']:
                 self.lives -= 1
                 self.world = World()
-            
-            self.render(screen)
 
             pygame.display.flip()
 
