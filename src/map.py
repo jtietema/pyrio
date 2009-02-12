@@ -7,6 +7,8 @@ class Map():
     def __init__(self):
         self.tiles = []
         
+        self.door = None
+        
         self.x_offset = 0
         self.y_offset = 0
         
@@ -32,5 +34,11 @@ class Map():
                 return True
         return False
     
+    def get_door(self):
+        return self.door
+    
     def append_tile(self, tile):
+        if isinstance(tile, Door):
+            self.door = tile
+        
         self.tiles.append(tile)
