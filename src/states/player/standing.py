@@ -13,6 +13,10 @@ class StandingState(State):
         State.__init__(self, player, animations, .3, .5)
 
     def process(self, tick_data):
+        # check if falling
+        if self.entity.check_falling(tick_data['time_passed'] * self.y_speed):
+            return 'falling'
+
         actions = tick_data['actions']
         if actions.x is not 0:
             return 'walking'

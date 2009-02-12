@@ -4,16 +4,23 @@ from pygame.locals import *
 from sys import exit
 
 from world import World
+from hud import Hud
 
 class Game():
-    def create_world(self):
+    def __init__(self):
+        self.lives = 3
+
+    def create(self):
         self.world = World()
+        self.hud = Hud(self)
         
     def update(self, tick_data):
         self.world.update(tick_data)
+        self.hud.update(tick_data)
         
     def render(self, screen):
         self.world.render(screen)
+        self.hud.render(screen)
         
     def run(self):
         pygame.init()
@@ -27,7 +34,7 @@ class Game():
 
         clock = pygame.time.Clock()
         
-        self.create_world()
+        self.create()
 
         actions = Actions()
 
@@ -83,6 +90,10 @@ class Game():
                 actions.set_x(joystick.get_axis(0))
                 
         return actions
+
+    def get_lives(self):
+        return self.lives
+
 
 class Actions():
     """
