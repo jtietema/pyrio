@@ -1,11 +1,12 @@
 
 import pygame
 from pygame.locals import *
-from sys import exit
+import sys
 
 from world import World
 from hud import Hud
 from menu import Menu
+from map_package import MapPackage
 
 class Game():
     def __init__(self):
@@ -13,9 +14,11 @@ class Game():
         self.score = 0
         self.pause = True
         self.debug = False
+        
+        self.map_package = MapPackage('testpak')
 
     def create(self):
-        self.world = World()
+        self.world = self.map_package.current()
         self.hud = Hud()
         self.menu = Menu()
         
@@ -83,6 +86,7 @@ class Game():
             tick_data['score'] = self.score
             tick_data['lives'] = self.lives
             tick_data['killed'] = False
+            tick_data['level_complete'] = False
             tick_data['pause'] = self.pause
             tick_data['debug'] = self.debug
 
@@ -95,9 +99,18 @@ class Game():
 
             if tick_data['killed']:
                 self.lives -= 1
-                self.world = World()
+                self.reset_world()
+            elif tick_data['level_complete']:
+                try:
+                    self.world = self.map_package.next()
+                except:
+                    print 'Game finished'
+                    sys.exit()
 
             pygame.display.flip()
+            
+    def reset_world(self):
+        self.world = self.map_package.current()
 
     def process_controls(self, actions, joystick):
         """
