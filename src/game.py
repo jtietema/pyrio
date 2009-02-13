@@ -82,6 +82,8 @@ class Game():
                             self.debug = False
                         else:
                             self.debug = True
+                    if event.key == K_r:
+                        self.reset_world()
 
             # Default values for tick data items.
             tick_data['time_passed'] = clock.tick()
