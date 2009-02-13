@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 import sys
 import os
@@ -8,13 +9,15 @@ from player import Player
 from map import Map
 from door import Door
 import enemies
+from coin import Coin
 
 class World():    
-    def __init__(self, map_file):
+    def __init__(self):
         self.player = None
         self.enemies = []
+        self.items = []
         
-        self.map = self.deserialize(map_file)
+        self.map = self.deserialize('test')
         
     def update(self, tick_data):
         self.player.update(tick_data)
@@ -22,10 +25,14 @@ class World():
         for enemy in self.enemies:
             enemy.update(tick_data)
         
+        for item in self.items:
+            item.update(tick_data)
+        
         self.map.update(tick_data)
         
         if self.map.is_finished(self.player):
-            tick_data['level_complete'] = True
+            print 'Level complete'
+            sys.exit()
         
     def render(self, screen):
         # Determine map offset
@@ -40,10 +47,17 @@ class World():
         screen.fill((164, 252, 255))
         self.map.render(screen, map_offsets)
         
+        for item in self.items:
+            item.render(screen, map_offsets)
+        
         for enemy in self.enemies:
             enemy.render(screen, map_offsets)
         
         self.player.render(screen)
+    
+        
+    # The folder to find the maps in.
+    MAPS_FOLDER = 'maps'
 
     # Characters map to tile images.
     TILE_MAP = {
@@ -70,19 +84,23 @@ class World():
         '2': enemies.Turtle
     }
     
+    ITEM_MAP = {
+        '*': Coin
+    }
+    
     # General settings for tiles. A tile corresponds to one ASCII character in
     # a map file.
     TILE_WIDTH = 64
     TILE_HEIGHT = 64
     
-    def deserialize(self, map_file_location):
-        """Loads a map from a map definition file based on the configuration above.
+    def deserialize(self, name):
+        """Loads a map from a map configuration file based on the configuration above.
         Returns a fully initialized Map object upon success, raises an Exception and
         returns false in case of an error."""
         map = Map()
         
         # Read the map file
-        map_file = open(map_file_location)
+        map_file = open(os.path.join(World.MAPS_FOLDER, name + '.map'))
         rows = map_file.read().split('\n')
         map_file.close()
         
@@ -103,7 +121,7 @@ class World():
 
         # We want to insert the entity in the center of the tile space, so divide by two.
         y = World.TILE_HEIGHT / 2
-        for row_index, row in enumerate(rows):            
+        for row_index, row in enumerate(rows):
             # Again, entity will be placed in the center of the tile space.
             x = World.TILE_WIDTH / 2
 
@@ -140,6 +158,11 @@ class World():
                     if tile_name != None:
                         tile = Tile(tile_name, (x, y))
                         map.append_tile(tile)
+                    
+                elif char in World.ITEM_MAP:
+                    item_cls = World.ITEM_MAP[char]
+                    item = item_cls((x,y), map)
+                    self.items.append(item)
                 
                 else:
                     raise Exception('Unknown character on row %d, column %d: %s' % (row_index, col_index, char))

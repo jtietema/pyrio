@@ -4,8 +4,9 @@ from game_entity import GameEntity
 from animation import Animation
 
 class Coin(GameEntity):
-    def __init__(self, (x,y)):
+    def __init__(self, (x,y), map):
         GameEntity.__init__(self, (x,y), (30,30))
+        self.map = map
         self.animation = Animation(('goldpiece', 'yellow'), ('1','2','3','4','5','6','7','8','9','10'))
     
     def update(self, tick_data):
