@@ -12,12 +12,12 @@ import enemies
 from coin import Coin
 
 class World():    
-    def __init__(self):
+    def __init__(self, map_file):
         self.player = None
         self.enemies = []
         self.items = []
         
-        self.map = self.deserialize('test')
+        self.map = self.deserialize(map_file)
         
     def update(self, tick_data):
         self.player.update(tick_data)
@@ -31,8 +31,7 @@ class World():
         self.map.update(tick_data)
         
         if self.map.is_finished(self.player):
-            print 'Level complete'
-            sys.exit()
+            tick_data['level_complete'] = True
         
     def render(self, screen):
         # Determine map offset
@@ -93,14 +92,14 @@ class World():
     TILE_WIDTH = 64
     TILE_HEIGHT = 64
     
-    def deserialize(self, name):
+    def deserialize(self, map_file_location):
         """Loads a map from a map configuration file based on the configuration above.
         Returns a fully initialized Map object upon success, raises an Exception and
         returns false in case of an error."""
         map = Map()
         
         # Read the map file
-        map_file = open(os.path.join(World.MAPS_FOLDER, name + '.map'))
+        map_file = open(map_file_location)
         rows = map_file.read().split('\n')
         map_file.close()
         
