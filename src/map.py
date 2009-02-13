@@ -80,9 +80,9 @@ class Map():
         w, h = new_rect.size
         
         # Determine what part of the matrix to check for collisions.
-        start_row_index, start_col_index = (y // Map.TILE_HEIGHT, x // Map.TILE_WIDTH)
-        end_row_index = min(y + h, self.height) // Map.TILE_HEIGHT
-        end_col_index = min(x + w, self.width) // Map.TILE_WIDTH
+        start_row_index, start_col_index = (max(0, y // Map.TILE_HEIGHT), max(0, x // Map.TILE_WIDTH))
+        end_row_index = max(0, min(y + h, self.height) // Map.TILE_HEIGHT)
+        end_col_index = max(0, min(x + w, self.width) // Map.TILE_WIDTH)
         
         for row_index in xrange(start_row_index, end_row_index + 1):            
             for col_index in xrange(start_col_index, end_col_index + 1):                
