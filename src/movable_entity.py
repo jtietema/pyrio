@@ -39,9 +39,6 @@ class MovableEntity(GameEntity):
         Also takes care of resetting the state and/or the animation if applicable."""
         self.previous_rect = self.rect
         
-        # Store previous animation for later access.
-        previous_animation = self.get_animation()
-        
         # Remember last state to detect state change.
         previous_state = self.currentState
         
@@ -55,24 +52,12 @@ class MovableEntity(GameEntity):
             previous_state.exit()
             next_state.enter()
             self.currentState = next_state
-            
-        # Get the new animation and check to see if it has changed.
-        animation = self.get_animation()
-        if animation is not previous_animation:
-            animation.reset()
-        
-        animation.process(tick_data['time_passed'])
 
         # check for debug mode
         self.debug = tick_data['debug']
     
     def render(self, screen, map_offsets):
-        GameEntity.render(self, screen, self.get_animation().get_image(), map_offsets)
-    
-    def get_animation(self):
-        """Helper method to quickly access the current animation object for
-        this entity."""
-        return self.currentState.get_animation(self.direction)
+        GameEntity.render(self, screen, self.currentState.get_image(), map_offsets)
     
     def move(self, x_delta, y_delta):
         """Only executes a move if there are no collisions with tiles. Corrects for moves
@@ -89,4 +74,11 @@ class MovableEntity(GameEntity):
                 self.rect = self.rect.move(x_delta, 0)
                 return True
 
-        return False 
+        return False
+    
+    def switch_state(self, target_state):
+        """Switches to the passed in state. Takes care of calling the exit and enter
+        hook methods."""
+        self.currentState.exit()
+        self.currentState = self.states[target_state]
+        self.currentState.enter()

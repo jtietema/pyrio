@@ -29,10 +29,14 @@ class FlatState(MovingState):
         return 'flat'
     
     def enter(self):
+        MovingState.enter(self)
+        
         self.counter = 0
         self.entity.rect.size = (60, 44)
         self.entity.rect.move_ip(0, 8)
     
     def exit(self):
+        MovingState.exit(self)
+        
         self.entity.rect.size = self.entity.default_size
         self.entity.rect.move_ip(0, -8)

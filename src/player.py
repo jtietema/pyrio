@@ -9,6 +9,7 @@ from states.player.standing import StandingState
 from states.player.jumping import JumpingState
 from states.player.falling import FallingState
 from states.player.bouncing import BouncingState
+from states.player.dead import DeadState
 
 class Player(MovableEntity):
     def __init__(self, position, map):
@@ -19,9 +20,12 @@ class Player(MovableEntity):
             'standing': StandingState(self),
             'jumping' : JumpingState(self),
             'falling' : FallingState(self),
-            'bouncing': BouncingState(self)
+            'bouncing': BouncingState(self),
+            'dead':     DeadState(self)
         }
         self.currentState = self.states['falling']
+        
+        self.dead = False
     
     def update(self, tick_data):
         MovableEntity.update(self, tick_data)
@@ -31,9 +35,9 @@ class Player(MovableEntity):
         x_screen = screen.get_width() / 2 - self.rect.width / 2
         y_screen = screen.get_height() / 2 - self.rect.height / 2
         
-        animation = self.get_animation()
-        offset_x, offset_y = animation.get_image().get_offset()
-        screen.blit(animation.get_image().get_surface(), (x_screen + offset_x, y_screen + offset_y))
+        image = self.currentState.get_image()
+        offset_x, offset_y = image.get_offset()
+        screen.blit(image.get_surface(), (x_screen + offset_x, y_screen + offset_y))
         self.render_debug(screen)
 
     def render_debug(self, screen):
@@ -44,13 +48,16 @@ class Player(MovableEntity):
     
     def hit(self, tick_data):
         """Called by an enemy when the player gets hit."""
-        tick_data['killed'] = True
+        if not self.dead:
+            self.dead = True
+            image = self.currentState.get_image()
+            self.switch_state('dead')
+            self.currentState.set_source_image(image)
+            tick_data['dead'] = True
     
     def bounce(self, tick_data, bottom):
         self.rect.bottom = bottom
-        self.currentState.exit()
-        self.currentState = self.states['bouncing']
-        self.currentState.enter()
-        self.get_animation().reset()
+        
+        self.switch_state('bouncing')
         
         self.update(tick_data)

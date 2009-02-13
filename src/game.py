@@ -15,6 +15,7 @@ class Game():
         self.score = 0
         self.pause = True
         self.debug = False
+        self.killed = False
         
         self.map_package = MapPackage('testpak')
 
@@ -86,7 +87,8 @@ class Game():
             tick_data['screen_size'] = screen.get_size()
             tick_data['score'] = self.score
             tick_data['lives'] = self.lives
-            tick_data['killed'] = False
+            tick_data['killed'] = self.killed
+            tick_data['restart_level'] = False
             tick_data['level_complete'] = False
             tick_data['pause'] = self.pause
             tick_data['debug'] = self.debug
@@ -95,10 +97,11 @@ class Game():
 
             self.score = tick_data['score']
             self.pause = tick_data['pause']
+            self.killed = tick_data['killed']
             
             self.render(screen)
 
-            if tick_data['killed']:
+            if tick_data['restart_level']:
                 self.lives -= 1
                 self.reset_world()
             elif tick_data['level_complete']:

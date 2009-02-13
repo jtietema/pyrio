@@ -42,4 +42,6 @@ class AbstractJumpingState(State):
         return self.name
 
     def enter(self):
+        State.enter(self)
+        
         self.jumping_time = 0

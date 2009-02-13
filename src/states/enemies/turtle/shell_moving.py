@@ -10,7 +10,7 @@ class ShellMovingState(MovingState):
         
         MovingState.__init__(self, enemy, animations, .5)
 
-    def get_animation(self, direction):
+    def get_animation(self):
         return self.animations['moving']
     
     def process(self, tick_data):
@@ -22,9 +22,13 @@ class ShellMovingState(MovingState):
         return 'shell_moving'
             
     def enter(self):
+        MovingState.enter(self)
+        
         self.entity.rect.size = (42, 36)
         self.entity.rect.move_ip(0, 28)
 
     def exit(self):
+        MovingState.exit(self)
+        
         self.entity.rect.size = self.entity.default_size
         self.entity.rect.move_ip(0, -28)

@@ -25,4 +25,3 @@ class StandingState(State):
         else:
             return 'standing'
         
-        

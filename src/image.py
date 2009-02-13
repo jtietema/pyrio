@@ -12,5 +12,4 @@ class Image():
 
     def get_size(self):
         return self.image.get_size()
-
-    
+        
