@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 from src.states.state import State
 from src.animation import Animation
@@ -23,9 +24,13 @@ class FallingState(State):
         # check if still falling
         if not self.entity.check_falling(time_passed * self.y_speed):
             # check if we really can't fall another pixel
-            if self.entity.check_falling(1):
-                y_delta = 1
-            else:
+            y_delta = int(time_passed * self.y_speed)
+            while y_delta > 0:
+                y_delta -= 1
+                if self.entity.check_falling(y_delta):
+                    break
+            
+            if y_delta is 0:
                 if actions.x is not 0:
                     return 'walking'
                 else:
