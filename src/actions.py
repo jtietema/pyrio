@@ -16,7 +16,7 @@ class Actions():
         self.x = x
 
     def set_y(self, y):
-        """Must be a float between 1 (right) and -1 (left)"""
+        """Must be a float between 1 (up) and -1 (down)"""
         self.y = y
 
     def set_jump(self, boolean):

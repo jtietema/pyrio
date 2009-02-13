@@ -78,7 +78,6 @@ class Game():
                         else:
                             self.debug = True
                     if event.key == K_ESCAPE:
-                        print 'escape event'
                         if not self.pause:
                             self.pause = True
             
@@ -140,7 +139,6 @@ class Game():
             actions.set_select(True)
         
         if pressed_keys[K_ESCAPE]:
-            print 'escape pressed keys'
             actions.set_cancel(True)
 
         # process gamepad / joystick

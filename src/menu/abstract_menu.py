@@ -19,10 +19,7 @@ class AbstractMenu():
             self.select(self.index, tick_data)
         
         if actions.cancel:
-            if self.submenu is None:
-                print 'escape menu'
-                tick_data['pause'] = False
-            else:
+            if self.submenu is not None:
                 self.submenu = None
         
         if actions.y > 0 and self.index is not 0 and self.timeout is 0:
