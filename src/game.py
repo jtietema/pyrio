@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 import pygame
 from pygame.locals import *
@@ -5,7 +6,7 @@ from sys import exit
 
 from world import World
 from hud import Hud
-from menu import Menu
+from menu.menu import Menu
 
 class Game():
     def __init__(self):
