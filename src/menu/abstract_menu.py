@@ -7,7 +7,9 @@ class AbstractMenu():
         self.index = 0
         self.flower = AssetManager.get_image(('menu','items'), 'flower')
         self.screen_size = None
+        self.timeout = 0
         self.menu()
+        self.submenu = None
     
     def update(self, tick_data):
         actions = tick_data['actions']
@@ -16,10 +18,24 @@ class AbstractMenu():
         if actions.select:
             self.select(self.index, tick_data)
         
-        if actions.y > 0 and self.index is not 0:
+        if actions.cancel:
+            if self.submenu is None:
+                print 'escape menu'
+                tick_data['pause'] = False
+            else:
+                self.submenu = None
+        
+        if actions.y > 0 and self.index is not 0 and self.timeout is 0:
             self.index -= 1
-        if actions.y < 0 and self.index is not self.max_index:
+            self.timeout = 300
+        if actions.y < 0 and self.index is not self.max_index and self.timeout is 0:
             self.index += 1
+            self.timeout = 300
+        
+        if self.timeout > 0:
+            self.timeout -= tick_data['time_passed']
+        else:
+            self.timeout = 0
     
     def render(self, screen):
         width, height = self.screen_size

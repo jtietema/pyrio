@@ -10,14 +10,15 @@ class Menu(AbstractMenu):
     def menu(self):
         self.menu_items = [
             AssetManager.get_image('menu','start'),
+            AssetManager.get_image('menu','video'),
             AssetManager.get_image('menu','quit')
         ]
-        self.max_index = 1
+        self.max_index = 2
     
     def select(self, index, tick_data):
         if index is 0:
             tick_data['pause'] = False
-        elif index is 1:
+        elif index is 2:
             print 'Bye...'
             sys.exit()
     
