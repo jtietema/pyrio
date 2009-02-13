@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Actions():
     """
     Simple class to hold all the actions the player can do.  In the rest of the game you
@@ -8,13 +9,14 @@ class Actions():
         self.y = 0
         self.jump = False
         self.select = False
+        self.cancel = False
 
     def set_x(self, x):
         """Must be a float between 1 (right) and -1 (left)"""
         self.x = x
 
     def set_y(self, y):
-        """Must be a float between 1 (right) and -1 (left)"""
+        """Must be a float between 1 (up) and -1 (down)"""
         self.y = y
 
     def set_jump(self, boolean):
@@ -25,3 +27,6 @@ class Actions():
 
     def set_select(self, boolean):
         self.select = True
+    
+    def set_cancel(self, boolean):
+        self.cancel = True

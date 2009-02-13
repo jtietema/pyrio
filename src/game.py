@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 import pygame
 from pygame.locals import *
@@ -5,9 +6,10 @@ import sys
 
 from world import World
 from hud import Hud
-from menu import Menu
 from map_package import MapPackage
 from actions import Actions
+from menu.menu import Menu
+
 
 class Game():
     def __init__(self):
@@ -64,18 +66,13 @@ class Game():
 
         while True:
             tick_data = {}
-            
+
             # Event handling
             for event in pygame.event.get():
                 if event.type == QUIT:
                     exit()
                 if event.type == KEYDOWN:
                     if event.key == K_q:
-                        if self.pause:
-                            self.pause = False
-                        else:
-                            self.pause = True
-                    if event.key == K_ESCAPE:
                         exit()
                     if event.key == K_d:
                         if self.debug:
@@ -84,9 +81,12 @@ class Game():
                             self.debug = True
                     if event.key == K_r:
                         self.reset_world()
-
+                        if event.key == K_ESCAPE:
+                            if not self.pause:
+                                self.pause = True
+            
             # Default values for tick data items.
-            tick_data['time_passed'] = clock.tick()
+            tick_data['time_passed'] = clock.tick(30)
             tick_data['actions'] = self.process_controls(actions, joystick)
             tick_data['screen_size'] = screen.get_size()
             tick_data['score'] = self.score
@@ -161,6 +161,9 @@ class Game():
 
         if pressed_keys[K_RETURN]:
             actions.set_select(True)
+        
+        if pressed_keys[K_ESCAPE]:
+            actions.set_cancel(True)
 
         # process gamepad / joystick
         if joystick is not None:
@@ -172,7 +175,7 @@ class Game():
                 actions.set_x(joystick.get_axis(0))
             if joystick.get_axis(1) > .05 or joystick.get_axis(1) < -.05:
                 actions.set_y(-1 * joystick.get_axis(1))
-                
+        
         return actions
 
     def get_lives(self):
