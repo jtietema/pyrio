@@ -26,7 +26,9 @@ class World():
             enemy.update(tick_data)
         
         for item in self.items:
-            item.update(tick_data)
+            picked_up_item = item.update(tick_data)
+            if picked_up_item is not None:
+                self.items.remove(picked_up_item)
         
         self.map.update(tick_data)
         
@@ -178,6 +180,10 @@ class World():
         # detection.
         for enemy in self.enemies:
             enemy.set_player(self.player)
+        
+        # make sure all items get a reference to the player for collision detection
+        for item in self.items:
+            item.set_player(self.player)
         
         map.postinit()
         

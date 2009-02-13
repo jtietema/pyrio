@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 import pygame
 
@@ -12,6 +13,7 @@ class GameEntity():
     def __init__(self, (x,y), (width, height)):
         self.rect = pygame.Rect((x - (width / 2),y - (height / 2)), (width,height))
         self.debug = False
+        self.player = None
         
     def get_x(self):
         return self.rect.centerx
@@ -43,6 +45,11 @@ class GameEntity():
     def get_rect(self):
         return self.rect
     
+    def set_player(self, player):
+        """Adds a reference to the player object to the entity after the world has been
+        initialized."""
+        self.player = player
+    
     def render(self, screen, image, (map_x_offset, map_y_offset)):
         """Renders the entity when it is in the visible area of the map."""
         width, height = self.get_size()
@@ -58,6 +65,10 @@ class GameEntity():
     def collide(self, rect):
         """Returns a boolean if the two rects collide"""
         return self.rect.colliderect(rect)
+    
+    def collides_with_player(self):
+        """Detects if this enemy collides with the player."""
+        return self.collide(self.player.get_rect())
 
     def collidedict(self, dict):
         """Returns (key, value) of the first collision, or None if no collision"""

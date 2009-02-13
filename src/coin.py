@@ -11,6 +11,10 @@ class Coin(GameEntity):
     
     def update(self, tick_data):
         self.animation.process(tick_data['time_passed'])
+        if self.collides_with_player():
+            tick_data['score'] += 1
+            return self
+        return None
     
     def render(self, screen, offsets):
         GameEntity.render(self,screen, self.animation.get_image(), offsets)
