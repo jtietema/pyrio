@@ -18,6 +18,12 @@ class GameEntity():
     
     def get_y(self):
         return self.rect.centery
+    
+    def get_top(self):
+        return self.rect.top
+    
+    def get_left(self):
+        return self.rect.left
         
     def get_position(self):
         return (self.rect.centerx, self.rect.centery)

@@ -98,9 +98,6 @@ class World():
         if min_leading_space > 0:
             rows = [row[min_leading_space:] for row in rows]
         
-        # Remove empty rows.
-        rows = [row for row in rows if len(row.strip()) > 0]
-        
         # Determine the length of the longest row in the map
         max_length = max([len(row) for row in rows])
         
