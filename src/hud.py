@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 import pygame
 
@@ -8,6 +9,7 @@ class Hud():
         # image to be rendered
         self.livesImage = AssetManager.get_image('game','lives')
         self.scoreImage = AssetManager.get_image('game', 'score')
+        self.font = pygame.font.SysFont('default', 56)
 
         # data needed from tick_data
         display_info = pygame.display.Info()
@@ -28,8 +30,7 @@ class Hud():
 
         # render score
         screen.blit(self.scoreImage.get_surface(), (width - 64, 10))
-        font = pygame.font.SysFont('default', 56)
-        text_surface = font.render(str(self.score), True, (255,255,0))
+        text_surface = self.font.render(str(self.score), True, (255,255,0))
         score_width = text_surface.get_size()[0]
         screen.blit(text_surface, ((width - score_width - 80), 10))
         
