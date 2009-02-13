@@ -81,9 +81,9 @@ class Game():
                             self.debug = True
                     if event.key == K_r:
                         self.reset_world()
-                        if event.key == K_ESCAPE:
-                            if not self.pause:
-                                self.pause = True
+                    if event.key == K_ESCAPE:
+                        if not self.pause:
+                            self.pause = True
             
             # Default values for tick data items.
             tick_data['time_passed'] = clock.tick(30)
