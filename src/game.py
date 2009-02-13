@@ -15,7 +15,7 @@ class Game():
         self.score = 0
         self.pause = True
         self.debug = False
-        self.killed = False
+        self.dead = False
         
         self.map_package = MapPackage('testpak')
 
@@ -65,6 +65,7 @@ class Game():
         while True:
             tick_data = {}
             
+            # Event handling
             for event in pygame.event.get():
                 if event.type == QUIT:
                     exit()
@@ -82,32 +83,50 @@ class Game():
                         else:
                             self.debug = True
 
+            # Default values for tick data items.
             tick_data['time_passed'] = clock.tick()
             tick_data['actions'] = self.process_controls(actions, joystick)
             tick_data['screen_size'] = screen.get_size()
             tick_data['score'] = self.score
             tick_data['lives'] = self.lives
-            tick_data['killed'] = self.killed
-            tick_data['restart_level'] = False
+            tick_data['dead'] = self.dead
+            tick_data['restart_world'] = False
             tick_data['level_complete'] = False
             tick_data['pause'] = self.pause
             tick_data['debug'] = self.debug
 
             self.update(tick_data)
 
+            # Store some tick data items on the Game object, so they can be stored
+            # across multiple render cycles and are not reset upon the next cycle.
             self.score = tick_data['score']
             self.pause = tick_data['pause']
-            self.killed = tick_data['killed']
+            self.dead = tick_data['dead']
             
             self.render(screen)
-
-            if tick_data['restart_level']:
-                self.lives -= 1
+            
+            # Check some parameters that are global to the game and can't be handled
+            # in encapsulated objects.
+            if tick_data['restart_world']:
+                # Time to restart the world.
+                if self.dead:
+                    # The player was declared dead before, so subtract a life.
+                    self.lives -= 1
+                
+                # Reset the world.
                 self.reset_world()
+                
+                # Reset the dead parameter: after the world has been reset, the player
+                # is alive again.
+                self.dead = False
             elif tick_data['level_complete']:
                 try:
+                    # Try to get a world object for the next map.
                     self.world = self.map_package.next()
                 except:
+                    # An exception is thrown when the end of the map package list is
+                    # reached. This means we have finished the map package and can
+                    # quit the game for now.
                     print 'Game finished'
                     sys.exit()
 

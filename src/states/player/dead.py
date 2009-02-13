@@ -33,9 +33,13 @@ class DeadState(State):
         self.still = True
     
     def get_animation(self):
+        """Return None, since we are not working with animations in this state."""
         return None
     
     def set_source_image(self, image):
+        """Sets the image to use as a source. Since the player is frozen upon dying,
+        we want to keep displaying the same image as the one that was active when the
+        player died."""
         self.image = image
     
     def process(self, tick_data):
@@ -44,8 +48,11 @@ class DeadState(State):
         corrected_counter_value = self.counter - DeadState.STILL_TIME
         
         if corrected_counter_value > DeadState.ANIMATION_TIME:
-            tick_data['restart_level'] = True
+            # Death animation is done, now is the time to restart the map.
+            tick_data['restart_world'] = True
         elif corrected_counter_value >= 0:
+            # We are past the still phase of the state, so start calculating the angle
+            # and scale based on the corrected counter value.
             self.still = False
             
             # Make sure we calculate using floating point values
@@ -56,6 +63,8 @@ class DeadState(State):
         return 'dead'
     
     def get_image(self):
+        """Returns the source image if we are still in still phase, otherwise returns
+        a rotated and scaled image."""
         if self.still:
             return self.image
         else:
