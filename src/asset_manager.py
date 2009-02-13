@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 import pygame
 import os
@@ -46,11 +47,15 @@ class AssetManager:
                 # Scale image?
                 if config.has_option(section, 'width'):
                     width = config.getint(section, 'width')
+                elif config.has_option('__default__', 'width'):
+                    width = config.getint('__default__', 'width')
                 else:
                     width = cls.IMAGE_DEFAULT_WIDTH
                 
                 if config.has_option(section, 'height'):
                     height = config.getint(section, 'height')
+                elif config.has_option('__default__', 'height'):
+                    height = config.getint('__default__', 'height')
                 else:
                     height = cls.IMAGE_DEFAULT_HEIGHT
                 
