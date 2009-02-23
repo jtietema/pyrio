@@ -12,7 +12,7 @@ class DeadState(State):
     
     # The amount of time the player animates. Aggregate this with STILL_TIME
     # to get the full time the player stays in dead state.
-    ANIMATION_TIME = 3000
+    ANIMATION_TIME = 4000
     
     # The maximum scale value the dead animation should reach.
     MIN_SCALE_VALUE = 0.

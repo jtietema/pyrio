@@ -82,4 +82,7 @@ class AssetManager:
                 images[group_folder][section] = Image(image, (offset_x, offset_y))
         
         return images[group_folder][name]
-        
+    
+    @classmethod
+    def get_sound(cls, group, name):        
+        return pygame.mixer.Sound(os.path.join('assets', 'sounds', 'player', 'dead.ogg'))

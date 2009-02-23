@@ -86,7 +86,7 @@ class Game():
                             self.pause = True
             
             # Default values for tick data items.
-            tick_data['time_passed'] = clock.tick(30)
+            tick_data['time_passed'] = clock.tick()
             tick_data['actions'] = self.process_controls(actions, joystick)
             tick_data['screen_size'] = screen.get_size()
             tick_data['score'] = self.score
