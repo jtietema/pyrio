@@ -1,5 +1,7 @@
 import pygame
 
+from src.game_locals import *
+
 from src.states.state import State
 from src.image import Image
 
@@ -12,7 +14,7 @@ class DeadState(State):
     
     # The amount of time the player animates. Aggregate this with STILL_TIME
     # to get the full time the player stays in dead state.
-    ANIMATION_TIME = 3000
+    ANIMATION_TIME = 4000
     
     # The maximum scale value the dead animation should reach.
     MIN_SCALE_VALUE = 0.
@@ -49,7 +51,7 @@ class DeadState(State):
         
         if corrected_counter_value > DeadState.ANIMATION_TIME:
             # Death animation is done, now is the time to restart the map.
-            tick_data['restart_world'] = True
+            pygame.event.post(pygame.event.Event(DEATH_ANIMATION_DONE))
         elif corrected_counter_value >= 0:
             # We are past the still phase of the state, so start calculating the angle
             # and scale based on the corrected counter value.
