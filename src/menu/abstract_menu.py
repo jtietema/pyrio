@@ -13,7 +13,7 @@ class AbstractMenu():
         self.index = 0
         self.flower = AssetManager.get_image(('menu','items'), 'flower').get_surface()
         self.screen_size = None
-        self.timeout = 0
+        self.timeout = 300
         self.menu()
         self.max_index = len(self.menu_items) - 1
         self.submenu = None
@@ -61,9 +61,10 @@ class AbstractMenu():
         else:
             # define center of the screen to render the menu
             width, height = self.screen_size
+            vertical_spacing = height / 8
             width /= 2
             height /= 2
-            height -= ((self.max_index + 1) / 2) * 150
+            height -= ((self.max_index + 1) / 2) * vertical_spacing
             
             for index in range(self.max_index + 1):
                 image = self.menu_items[index]
@@ -71,4 +72,4 @@ class AbstractMenu():
                     # draw flower in front of selected item
                     screen.blit(self.flower, (width - 260, height + 20))
                 screen.blit(image, (width - 128, height))
-                height += 150
+                height += vertical_spacing

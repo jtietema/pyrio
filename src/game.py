@@ -4,6 +4,7 @@ import pygame
 from pygame.locals import *
 import sys
 
+from game_locals import *
 from world import World
 from hud import Hud
 from map_package import MapPackage

@@ -5,6 +5,7 @@ import pygame
 from src.config import Config
 
 from abstract_menu import AbstractMenu
+from resolution_menu import ResolutionMenu
 
 class VideoMenu(AbstractMenu):
     def menu(self):
@@ -32,6 +33,9 @@ class VideoMenu(AbstractMenu):
     
     def select(self, index, tick_data):
         config = Config.get_instance()
+        if index is 0:
+            self.submenu = ResolutionMenu()
+            self.submenu.update(tick_data)
         if index is 1:
             if config.get_fullscreen():
                 fullscreen = 'Windowed'
