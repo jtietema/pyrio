@@ -19,12 +19,12 @@ class GameState():
         self.game.world.render(screen)
         self.game.hud.render(screen)
     
-    def enter(self):
+    def enter(self, previous_state):
         """Called when entering this state. This allows for initialization when entering
         the state. By default does nothing."""
         pass
     
-    def exit(self):
+    def exit(self, next_state):
         """Called when exiting this state. Can be used to restore settings that have
         been altered upon entering the state. By default does nothing."""
         pass

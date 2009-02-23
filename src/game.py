@@ -27,10 +27,15 @@ class Game():
             'paused': PausedState(self),
             'player_death': PlayerDeathState(self)
         }
-        self.state = self.states['playing']
-        self.state.enter()
+        self.state = 'playing'
+        self.get_current_state().enter(None)
         
         self.map_package = MapPackage('testpak')
+    
+    def get_current_state(self):
+        """Returns the current state object. Useful since the current state is stored
+        in string form on the game object."""
+        return self.states[self.state]
 
     def create(self):
         self.world = self.map_package.current()
@@ -63,6 +68,9 @@ class Game():
             print 'Joystick found with ' + str(joystick.get_numaxes()) + ' axes and ' + str(joystick.get_numbuttons()) + ' buttons'
 
         while True:
+            # Get the current state object.
+            state = self.get_current_state()
+            
             tick_data = {}
 
             # Event handling
@@ -76,7 +84,7 @@ class Game():
                     self.next_map()
                 
                 # Make sure the current state also has access to this event.
-                self.state.add_event(event)
+                state.add_event(event)
             
             # Default values for tick data items.
             time_passed = clock.tick()
@@ -88,7 +96,7 @@ class Game():
             
             tick_data['debug'] = False # TODO: move to config!!!
 
-            next_state = self.state.update(tick_data)
+            next_state = state.update(tick_data)
             
             # Make sure we have received a string as the return value from the
             # previous update() call to the current state.
@@ -98,7 +106,7 @@ class Game():
             # across multiple render cycles and are not reset upon the next cycle.
             self.score = tick_data['score']
             
-            self.state.render(screen)
+            state.render(screen)
             
             self.next_state(next_state)
 
@@ -118,15 +126,16 @@ class Game():
     
     def next_state(self, next_state):
         """Checks if we need to switch to a different state, and switches if yes."""
-        if self.states[next_state] is not self.state:
+        if next_state is not self.state:
             self.switch_state(next_state)
     
     def switch_state(self, next_state):
         """Switches to a different state, appropriately calling exit() on the current
         state and enter() on the new state."""
-        self.state.exit()
-        self.state = self.states[next_state]
-        self.state.enter()
+        previous_state = self.state
+        self.get_current_state().exit(next_state)
+        self.state = next_state
+        self.get_current_state().enter(previous_state)
             
     def reset_world(self):
         self.world = self.map_package.current()

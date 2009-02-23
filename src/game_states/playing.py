@@ -8,8 +8,8 @@ class PlayingState(GameState):
     with the player entity.
     """
     
-    def __init__(self, game):
-        GameState.__init__(self, game)
+    def __init__(self, *args):
+        GameState.__init__(self, *args)
         
         self.debug = False
     
