@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from src.asset_manager import AssetManager
+from src.overlay import Overlay
 
 class AbstractMenu():
     """Base class for all menu's defines logic for navigating menu's and rendering menu's
@@ -17,6 +18,8 @@ class AbstractMenu():
         self.menu()
         self.max_index = len(self.menu_items) - 1
         self.submenu = None
+        
+        self.overlay = Overlay(opacity=60)
     
     def update(self, tick_data):
         """Reads the users controls and updates the state from the menu
@@ -59,6 +62,8 @@ class AbstractMenu():
         if self.submenu is not None:
             self.submenu.render(screen)
         else:
+            self.overlay.render(screen)
+            
             # define center of the screen to render the menu
             width, height = self.screen_size
             vertical_spacing = height / 8
