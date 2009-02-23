@@ -55,15 +55,6 @@ class Game():
 
         actions = Actions()
 
-        # setup joystick/gamepad if present
-        joystick = None
-        if pygame.joystick.get_count() > 0:
-            # at least one joystick is found
-            print str(pygame.joystick.get_count()) + ' joystick(s) found'
-            joystick = pygame.joystick.Joystick(0)
-            joystick.init()
-            print 'Joystick found with ' + str(joystick.get_numaxes()) + ' axes and ' + str(joystick.get_numbuttons()) + ' buttons'
-
         while True:
             tick_data = {}
 
@@ -83,7 +74,7 @@ class Game():
             # Default values for tick data items.
             time_passed = clock.tick()
             tick_data['time_passed'] = time_passed
-            tick_data['actions'] = self.process_controls(actions, joystick)
+            tick_data['actions'] = actions.process_controls()
             tick_data['screen_size'] = screen.get_size()
             tick_data['score'] = self.score
             tick_data['lives'] = self.lives
@@ -132,47 +123,6 @@ class Game():
             
     def reset_world(self):
         self.world = self.map_package.current()
-
-    def process_controls(self, actions, joystick):
-        """
-        Maps all the supported controls to a common format.
-        """
-        actions.reset()
-        # process the keyboard controls
-        pressed_keys = pygame.key.get_pressed()
-        if pressed_keys[K_UP]:
-            actions.set_jump(True)
-
-        if pressed_keys[K_LEFT]:
-            actions.set_x(-1.0)
-
-        if pressed_keys[K_RIGHT]:
-            actions.set_x(1.0)
-
-        if pressed_keys[K_UP]:
-            actions.set_y(1.0)
-
-        if pressed_keys[K_DOWN]:
-            actions.set_y(-1.0)
-
-        if pressed_keys[K_RETURN]:
-            actions.set_select(True)
-        
-        if pressed_keys[K_ESCAPE]:
-            actions.set_cancel(True)
-
-        # process gamepad / joystick
-        if joystick is not None:
-            if joystick.get_button(0):
-                actions.set_jump(True)
-            if joystick.get_button(1):
-                actions.set_select(True)
-            if joystick.get_axis(0) > .05 or joystick.get_axis(0) < -.05:
-                actions.set_x(joystick.get_axis(0))
-            if joystick.get_axis(1) > .05 or joystick.get_axis(1) < -.05:
-                actions.set_y(-1 * joystick.get_axis(1))
-        
-        return actions
 
     def get_lives(self):
         return self.lives
