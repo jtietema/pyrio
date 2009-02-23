@@ -1,5 +1,7 @@
 import pygame
 
+from config import Config
+
 class Overlay():
     """Class to represent an overlay drawn over the screen. The fading task can be set
     using the fade_in(), fade_out() and stop_fade() methods. Please note that fading
@@ -17,7 +19,7 @@ class Overlay():
     def __init__(self, opacity=50, fade_speed=1000):
         """Initializes a new overlay object."""
         # Create a new black surface the size of the screen.
-        self.surface = pygame.Surface((1920, 1200))
+        self.surface = pygame.Surface(Config.get_instance().get_resolution())
         self.surface.fill((0, 0, 0))
         
         # By default, do not fade.
