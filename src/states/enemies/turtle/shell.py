@@ -20,8 +20,16 @@ class ShellState(State):
             
             if self.entity.get_rect().centerx < self.entity.player.get_rect().centerx:
                 self.entity.direction = GameEntity.DIRECTION_LEFT
+                
+                # Make sure we don't bump into the shell in the next frame, when it is
+                # deadly.
+                self.entity.rect.right = min(self.entity.player.rect.left, self.entity.rect.right)
             else:
                 self.entity.direction = GameEntity.DIRECTION_RIGHT
+                
+                # Make sure we don't bump into the shell in the next frame, when it is
+                # deadly.
+                self.entity.rect.left = max(self.entity.player.rect.right, self.entity.rect.left)
             
             return 'shell_moving'
             
