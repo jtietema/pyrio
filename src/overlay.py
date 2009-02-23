@@ -45,7 +45,7 @@ class Overlay():
     
     def get_alpha_value(self):
         """Calculates the alpha value based on the opacity."""
-        return (self.opacity / 100) * Overlay.MAX_ALPHA
+        return (self.opacity / 100.) * Overlay.MAX_ALPHA
     
     def fade_in(self):
         """Sets the overlay to start fading in."""
