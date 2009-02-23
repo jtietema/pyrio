@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
+import pygame
 import sys
 import os
 import re
 
+from game_locals import *
 from tile import Tile
 from player import Player
 from map import Map

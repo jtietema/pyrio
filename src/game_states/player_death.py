@@ -15,6 +15,9 @@ class PlayerDeathState(GameState):
                 self.game.reset_world()
                 
                 next_state = 'playing'
+            elif event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    next_state = 'paused'
         
         self.game.world.update_player(tick_data)
         self.game.hud.update(tick_data)
