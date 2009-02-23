@@ -22,6 +22,9 @@ class Game():
         self.lives = 3
         self.score = 0
         
+        # The score the player had on world initialization.
+        self.initial_score = 0
+        
         # Initialize the game states
         self.states = {
             'playing': PlayingState(self),
@@ -75,6 +78,8 @@ class Game():
                 elif event.type == KEYDOWN:
                     if event.key == K_q:
                         exit()
+                elif event.type == COIN_COLLECTED:
+                    self.score += 1
                 
                 # Make sure the current state also has access to this event.
                 state.add_event(event)
@@ -94,10 +99,6 @@ class Game():
             # Make sure we have received a string as the return value from the
             # previous update() call to the current state.
             assert isinstance(next_state, str)
-
-            # Store some tick data items on the Game object, so they can be stored
-            # across multiple render cycles and are not reset upon the next cycle.
-            self.score = tick_data['score']
             
             state.render(screen)
             
@@ -111,11 +112,13 @@ class Game():
         try:
             # Try to get a world object for the next map.
             self.world = self.map_package.next()
+            
+            self.initial_score = self.score
         except:
             # An exception is thrown when the end of the map package list is
             # reached. This means we have finished the map package and can
             # quit the game for now.
-            print 'Game finished'
+            print 'Game finished with a score of', self.score
             sys.exit()
     
     def next_state(self, next_state):
@@ -132,7 +135,10 @@ class Game():
         self.get_current_state().enter(previous_state)
             
     def reset_world(self):
+        """Reloads the current world/map and resets the coin score to its initial
+        state."""
         self.world = self.map_package.current()
+        self.score = self.initial_score
 
     def get_lives(self):
         return self.lives

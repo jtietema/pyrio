@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import pygame
+
+from game_locals import *
 from game_entity import GameEntity
 from animation import Animation
 
@@ -12,7 +15,7 @@ class Coin(GameEntity):
     def update(self, tick_data):
         self.animation.process(tick_data['time_passed'])
         if self.collides_with_player():
-            tick_data['score'] += 1
+            pygame.event.post(pygame.event.Event(COIN_COLLECTED))
             return self
         return None
     
