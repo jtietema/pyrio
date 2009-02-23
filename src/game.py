@@ -46,7 +46,7 @@ class Game():
             config.get_hardwareacceleration_bitwise() | 
             config.get_fullscreen_bitwise(),32)
         
-        pygame.display.set_caption('Pygame platform')
+        pygame.display.set_caption('Pyrio')
         pygame.mouse.set_visible(False)
 
         clock = pygame.time.Clock()

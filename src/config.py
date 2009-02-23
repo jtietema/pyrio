@@ -92,6 +92,19 @@ class Config():
                 self.doublebuffer = self.settings.getboolean('screen', 'doublebuffer')
         
         # read controls
+        if self.settings.has_section('controls'):
+            if self.settings.has_option('controls', 'up'):
+                self.keys['up'] = self.settings.getint('controls', 'up')
+            if self.settings.has_option('controls', 'down'):
+                self.keys['down'] = self.settings.getint('controls', 'down')
+            if self.settings.has_option('controls', 'left'):
+                self.keys['left'] = self.settings.getint('controls', 'left')
+            if self.settings.has_option('controls', 'right'):
+                self.keys['right'] = self.settings.getint('controls', 'right')
+            if self.settings.has_option('controls', 'select'):
+                self.keys['select'] = self.settings.getint('controls', 'select')
+            if self.settings.has_option('controls', 'cancel'):
+                self.keys['cancel'] = self.settings.getint('controls', 'cancel')
         
     def write(self):
         # write screen options
@@ -111,6 +124,16 @@ class Config():
             self.settings.set('screen', 'hardwareacceleration', 'true')
         else:
             self.settings.set('screen', 'hardwareacceleration', 'false')
+        
+        # write controls
+        if not self.settings.has_section('controls'):
+            self.settings.add_section('controls')
+        self.settings.set('controls', 'up', self.keys['up'])
+        self.settings.set('controls', 'down', self.keys['down'])
+        self.settings.set('controls', 'left', self.keys['left'])
+        self.settings.set('controls', 'right', self.keys['right'])
+        self.settings.set('controls', 'select', self.keys['select'])
+        self.settings.set('controls', 'cancel', self.keys['cancel'])
         
         # write the file            
         file = open(self.settings_file, 'w')

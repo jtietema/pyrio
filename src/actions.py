@@ -2,6 +2,8 @@
 import pygame
 from pygame.locals import *
 
+from config import Config
+
 class Actions():
     """
     Simple class to hold all the actions the player can do.  In the rest of the game you
@@ -49,28 +51,29 @@ class Actions():
         """
         Maps all the supported controls to a common format.
         """
+        config = Config.get_instance()
         self.reset()
         # process the keyboard controls
         pressed_keys = pygame.key.get_pressed()
-        if pressed_keys[K_UP]:
+        if pressed_keys[config.get_key('up')]:
             self.set_jump(True)
 
-        if pressed_keys[K_LEFT]:
+        if pressed_keys[config.get_key('left')]:
             self.set_x(-1.0)
 
-        if pressed_keys[K_RIGHT]:
+        if pressed_keys[config.get_key('right')]:
             self.set_x(1.0)
 
-        if pressed_keys[K_UP]:
+        if pressed_keys[config.get_key('up')]:
             self.set_y(1.0)
 
-        if pressed_keys[K_DOWN]:
+        if pressed_keys[config.get_key('down')]:
             self.set_y(-1.0)
 
-        if pressed_keys[K_RETURN]:
+        if pressed_keys[config.get_key('select')]:
             self.set_select(True)
         
-        if pressed_keys[K_ESCAPE]:
+        if pressed_keys[config.get_key('cancel')]:
             self.set_cancel(True)
 
         # process gamepad / joystick
