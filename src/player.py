@@ -1,5 +1,6 @@
 
 from pygame.locals import *
+from game_locals import *
 import pygame
 
 from movable_entity import MovableEntity
@@ -54,7 +55,7 @@ class Player(MovableEntity):
             image = self.currentState.get_image()
             self.switch_state('dead')
             self.currentState.set_source_image(image)
-            tick_data['dead'] = True
+            pygame.event.post(pygame.event.Event(PLAYER_DEATH))
             
             AssetManager.get_sound('test', 'test').play()
     

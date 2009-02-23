@@ -4,20 +4,31 @@ import pygame
 from pygame.locals import *
 import sys
 
+from game_locals import *
+
 from world import World
 from hud import Hud
 from map_package import MapPackage
 from actions import Actions
 from menu.menu import Menu
 
+from game_states.playing import PlayingState
+from game_states.paused import PausedState
+from game_states.player_death import PlayerDeathState
 
 class Game():
     def __init__(self):
         self.lives = 3
         self.score = 0
-        self.pause = True
-        self.debug = False
-        self.dead = False
+        
+        # Initialize the game states
+        self.states = {
+            'playing': PlayingState(self),
+            'paused': PausedState(self),
+            'player_death': PlayerDeathState(self)
+        }
+        self.state = self.states['playing']
+        self.state.enter()
         
         self.map_package = MapPackage('testpak')
 
@@ -26,19 +37,6 @@ class Game():
         self.hud = Hud()
         self.menu = Menu()
         
-    def update(self, tick_data):
-        if self.pause:
-            self.menu.update(tick_data)
-        else:
-            self.world.update(tick_data)
-            self.hud.update(tick_data)
-        
-    def render(self, screen):
-        self.world.render(screen)
-        self.hud.render(screen)
-        if self.pause:
-            self.menu.render(screen)
-        
     def run(self):
         pygame.init()
 
@@ -46,7 +44,7 @@ class Game():
         screen = pygame.display.set_mode((display_info.current_w, display_info.current_h),
             DOUBLEBUF | HWSURFACE | FULLSCREEN, 32)
         #screen = pygame.display.set_mode((800,600),0,32)
-        pygame.display.set_caption('Pygame platform')
+        pygame.display.set_caption('Pyrio')
         pygame.mouse.set_visible(False)
 
         clock = pygame.time.Clock()
@@ -71,68 +69,64 @@ class Game():
             for event in pygame.event.get():
                 if event.type == QUIT:
                     exit()
-                if event.type == KEYDOWN:
+                elif event.type == KEYDOWN:
                     if event.key == K_q:
                         exit()
-                    if event.key == K_d:
-                        if self.debug:
-                            self.debug = False
-                        else:
-                            self.debug = True
-                    if event.key == K_r:
-                        self.reset_world()
-                    if event.key == K_ESCAPE:
-                        if not self.pause:
-                            self.pause = True
+                elif event.type == MAP_FINISHED:
+                    self.next_map()
+                
+                # Make sure the current state also has access to this event.
+                self.state.add_event(event)
             
             # Default values for tick data items.
-            tick_data['time_passed'] = clock.tick()
+            time_passed = clock.tick()
+            tick_data['time_passed'] = time_passed
             tick_data['actions'] = self.process_controls(actions, joystick)
             tick_data['screen_size'] = screen.get_size()
             tick_data['score'] = self.score
             tick_data['lives'] = self.lives
-            tick_data['dead'] = self.dead
-            tick_data['restart_world'] = False
-            tick_data['level_complete'] = False
-            tick_data['pause'] = self.pause
-            tick_data['debug'] = self.debug
+            
+            tick_data['debug'] = False # TODO: move to config!!!
 
-            self.update(tick_data)
+            next_state = self.state.update(tick_data)
+            
+            # Make sure we have received a string as the return value from the
+            # previous update() call to the current state.
+            assert isinstance(next_state, str)
 
             # Store some tick data items on the Game object, so they can be stored
             # across multiple render cycles and are not reset upon the next cycle.
             self.score = tick_data['score']
-            self.pause = tick_data['pause']
-            self.dead = tick_data['dead']
             
-            self.render(screen)
+            self.state.render(screen)
             
-            # Check some parameters that are global to the game and can't be handled
-            # in encapsulated objects.
-            if tick_data['restart_world']:
-                # Time to restart the world.
-                if self.dead:
-                    # The player was declared dead before, so subtract a life.
-                    self.lives -= 1
-                
-                # Reset the world.
-                self.reset_world()
-                
-                # Reset the dead parameter: after the world has been reset, the player
-                # is alive again.
-                self.dead = False
-            elif tick_data['level_complete']:
-                try:
-                    # Try to get a world object for the next map.
-                    self.world = self.map_package.next()
-                except:
-                    # An exception is thrown when the end of the map package list is
-                    # reached. This means we have finished the map package and can
-                    # quit the game for now.
-                    print 'Game finished'
-                    sys.exit()
+            self.next_state(next_state)
 
             pygame.display.flip()
+    
+    def next_map(self):
+        """Loads the next map in the map package."""
+        try:
+            # Try to get a world object for the next map.
+            self.world = self.map_package.next()
+        except:
+            # An exception is thrown when the end of the map package list is
+            # reached. This means we have finished the map package and can
+            # quit the game for now.
+            print 'Game finished'
+            sys.exit()
+    
+    def next_state(self, next_state):
+        """Checks if we need to switch to a different state, and switches if yes."""
+        if self.states[next_state] is not self.state:
+            self.switch_state(next_state)
+    
+    def switch_state(self, next_state):
+        """Switches to a different state, appropriately calling exit() on the current
+        state and enter() on the new state."""
+        self.state.exit()
+        self.state = self.states[next_state]
+        self.state.enter()
             
     def reset_world(self):
         self.world = self.map_package.current()

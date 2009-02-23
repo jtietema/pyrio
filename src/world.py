@@ -33,7 +33,11 @@ class World():
         self.map.update(tick_data)
         
         if self.map.is_finished(self.player):
-            tick_data['level_complete'] = True
+            pygame.event.post(pygame.event.Event(MAP_FINISHED))
+    
+    def update_player(self, tick_data):
+        """Updates only the player entity."""
+        self.player.update(tick_data)
         
     def render(self, screen):
         # Determine map offset
