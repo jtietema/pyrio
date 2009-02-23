@@ -9,6 +9,7 @@ from hud import Hud
 from map_package import MapPackage
 from actions import Actions
 from menu.menu import Menu
+from config import Config
 
 
 class Game():
@@ -41,11 +42,13 @@ class Game():
         
     def run(self):
         pygame.init()
-
-        display_info = pygame.display.Info()
-        screen = pygame.display.set_mode((display_info.current_w, display_info.current_h),
-            DOUBLEBUF | HWSURFACE | FULLSCREEN, 32)
-        #screen = pygame.display.set_mode((800,600),0,32)
+        
+        config = Config.get_instance()
+        screen = pygame.display.set_mode(config.get_resolution(),
+            config.get_doublebuffer_bitwise() | 
+            config.get_hardwareacceleration_bitwise() | 
+            config.get_fullscreen_bitwise(),32)
+        
         pygame.display.set_caption('Pygame platform')
         pygame.mouse.set_visible(False)
 

@@ -32,6 +32,7 @@ class AbstractMenu():
         else:
             # select the current item
             if actions.select and self.timeout is 0:
+                self.timeout = 300
                 return self.select(self.index, tick_data)
             
             # return to previous menu
