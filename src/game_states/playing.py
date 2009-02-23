@@ -19,6 +19,8 @@ class PlayingState(GameState):
         for event in self.get_events():
             if event.type == PLAYER_DEATH:
                 next_state = 'player_death'
+            elif event.type == MAP_FINISHED:
+                next_state = 'map_transition'
             elif event.type == KEYDOWN:
                 if event.key == K_d:
                     if self.debug:
@@ -27,7 +29,7 @@ class PlayingState(GameState):
                         self.debug = True
                 if event.key == K_r:
                     self.game.reset_world()
-                if event.key == K_ESCAPE and next_state is not 'player_death':
+                if event.key == K_ESCAPE and next_state is 'playing':
                     next_state = 'paused'
         
         tick_data['debug'] = self.debug

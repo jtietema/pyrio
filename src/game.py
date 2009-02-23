@@ -15,6 +15,7 @@ from menu.menu import Menu
 from game_states.playing import PlayingState
 from game_states.paused import PausedState
 from game_states.player_death import PlayerDeathState
+from game_states.map_transition import MapTransitionState
 
 class Game():
     def __init__(self):
@@ -25,7 +26,8 @@ class Game():
         self.states = {
             'playing': PlayingState(self),
             'paused': PausedState(self),
-            'player_death': PlayerDeathState(self)
+            'player_death': PlayerDeathState(self),
+            'map_transition': MapTransitionState(self)
         }
         self.state = 'playing'
         self.get_current_state().enter(None)
@@ -80,8 +82,6 @@ class Game():
                 elif event.type == KEYDOWN:
                     if event.key == K_q:
                         exit()
-                elif event.type == MAP_FINISHED:
-                    self.next_map()
                 
                 # Make sure the current state also has access to this event.
                 state.add_event(event)
@@ -113,7 +113,8 @@ class Game():
             pygame.display.flip()
     
     def next_map(self):
-        """Loads the next map in the map package."""
+        """Loads the next map in the map package, or quits the game if the end of the
+        map package has been reached."""
         try:
             # Try to get a world object for the next map.
             self.world = self.map_package.next()
