@@ -86,6 +86,8 @@ class AssetManager:
                 offset_x = 0
                 if config.has_option(section, 'offset_x'):
                     offset_x = config.getint(section, 'offset_x')
+                elif config.has_option('__default__', 'offset_x'):
+                    offset_x = config.getint('__default__', 'offset_x')
 
                 offset_y = 0
                 if config.has_option(section, 'offset_y'):

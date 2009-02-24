@@ -30,7 +30,7 @@ from states.player.dead import DeadState
 
 class Player(MovableEntity):
     def __init__(self, position, map):
-        MovableEntity.__init__(self, position, (56, 60), map)
+        MovableEntity.__init__(self, position, (48, 60), map)
 
         self.states = {
             'walking' : WalkingState(self),
