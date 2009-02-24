@@ -90,7 +90,8 @@ class World():
         '/': 'left_up',
         '\\': 'right_up',
         '!': 'pipe_ver',
-        '+': 'pipe_up'
+        '+': 'pipe_up',
+        '&': 'stone'
     }
 
     # The character used to represent the player.
