@@ -2,6 +2,7 @@ import pygame
 
 from abstract_menu import AbstractMenu
 from src.config import Config
+from src.game_locals import *
 
 class ResolutionMenu(AbstractMenu):
     def menu(self):
@@ -20,3 +21,4 @@ class ResolutionMenu(AbstractMenu):
         config = Config.get_instance()
         config.set_resolution(self.modes[index])
         config.write()
+        pygame.event.post(pygame.event.Event(VIDEOMODE_CHANGED))

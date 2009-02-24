@@ -50,11 +50,8 @@ class Game():
     def run(self):
         pygame.init()
         
+        screen = self.switch_resolution()
         config = Config.get_instance()
-        screen = pygame.display.set_mode(config.get_resolution(),
-            config.get_doublebuffer_bitwise() | 
-            config.get_hardwareacceleration_bitwise() | 
-            config.get_fullscreen_bitwise(),32)
         
         pygame.display.set_caption('Pyrio')
         pygame.mouse.set_visible(False)
@@ -80,6 +77,8 @@ class Game():
                         exit()
                 elif event.type == COIN_COLLECTED:
                     self.score += 1
+                elif event.type == VIDEOMODE_CHANGED:
+                    screen = self.switch_resolution()
                 
                 # Make sure the current state also has access to this event.
                 state.add_event(event)
@@ -142,3 +141,11 @@ class Game():
 
     def get_lives(self):
         return self.lives
+    
+    def switch_resolution(self):
+        config = Config.get_instance()
+        screen = pygame.display.set_mode(config.get_resolution(),
+            config.get_doublebuffer_bitwise() | 
+            config.get_hardwareacceleration_bitwise() | 
+            config.get_fullscreen_bitwise(),32)
+        return screen

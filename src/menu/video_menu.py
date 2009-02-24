@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import pygame
+from src.game_locals import *
 
 from src.config import Config
 
@@ -45,6 +46,7 @@ class VideoMenu(AbstractMenu):
                 config.set_fullscreen(True)
             config.write()
             self.menu_items[1] = self.font.render(fullscreen, True, (200,200,200))
+            pygame.event.post(pygame.event.Event(VIDEOMODE_CHANGED))
         if index is 2:
             if config.get_hardwareacceleration():
                 hardwareacceleration = 'Software rendering'
@@ -54,6 +56,7 @@ class VideoMenu(AbstractMenu):
                 config.set_hardwareacceleration(True)
             config.write()
             self.menu_items[2] = self.font.render(hardwareacceleration, True, (200,200,200))
+            pygame.event.post(pygame.event.Event(VIDEOMODE_CHANGED))
         if index is 3:
             if config.get_doublebuffer():
                 doublebuffer = 'Doublebuffer: off'
@@ -63,6 +66,8 @@ class VideoMenu(AbstractMenu):
                 doublebuffer = 'Doublebuffer: on'
             config.write()
             self.menu_items[3] = self.font.render(doublebuffer, True, (200,200,200))
+            pygame.event.post(pygame.event.Event(VIDEOMODE_CHANGED))
         if index is 4:
             return None
         return self
+    
