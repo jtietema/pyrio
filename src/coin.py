@@ -32,6 +32,7 @@ class Coin(GameEntity):
         self.animation.process(tick_data['time_passed'])
         if self.collides_with_player():
             pygame.event.post(pygame.event.Event(COIN_COLLECTED))
+            assets.sounds.coin.play()
             return self
         return None
     

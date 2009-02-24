@@ -49,6 +49,8 @@ class ShellState(State):
                 # deadly.
                 self.entity.rect.left = max(self.entity.player.rect.right, self.entity.rect.left)
             
+            assets.sounds.turtle.hit_shell.play()
+            
             return 'shell_moving'
             
         return 'shell'

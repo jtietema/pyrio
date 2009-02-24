@@ -35,6 +35,9 @@ class World():
         
         self.map = self.deserialize(map_file)
         
+        pygame.mixer.music.load(os.path.join('assets', 'music', 'jungle_1.ogg'))
+        pygame.mixer.music.play()
+        
     def update(self, tick_data):
         self.player.update(tick_data)
         

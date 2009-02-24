@@ -22,6 +22,8 @@ class MovingState(State):
         State.__init__(*args)
     
     def process(self, tick_data):
+        """General process function for moving enemies. Returns true if the entity has
+        flipped horizontal direction, false if not."""
         x_delta = tick_data['time_passed'] * self.x_speed
         
         heading_left = self.entity.direction is GameEntity.DIRECTION_LEFT
@@ -32,3 +34,6 @@ class MovingState(State):
         # Flip the direction if the requested movement could not be performed.
         if not self.entity.move(x_delta, 0):
             self.entity.direction = GameEntity.DIRECTION_RIGHT if heading_left else GameEntity.DIRECTION_LEFT
+            return True
+        
+        return False

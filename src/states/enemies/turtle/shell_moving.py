@@ -31,7 +31,9 @@ class ShellMovingState(MovingState):
         return self.animations['moving']
     
     def process(self, tick_data):
-        MovingState.process(self, tick_data)
+        flipped = MovingState.process(self, tick_data)
+        if flipped:
+            assets.sounds.turtle.hit_shell.play()
         
         if self.entity.collides_with_player():
             self.entity.hit_player(tick_data)
