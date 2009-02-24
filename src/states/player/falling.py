@@ -6,12 +6,14 @@ from src.game_entity import GameEntity
 
 from pygame.locals import *
 
+import src.assets as assets
+
 class FallingState(State):
     
     def __init__(self, player):
         animations = {
-            'left' : Animation('player', ('fall_left', )),
-            'right': Animation('player', ('fall_right',))
+            'left' : Animation(assets.images.player, ('fall_left', )),
+            'right': Animation(assets.images.player, ('fall_right',))
         }
         State.__init__(self, player, animations, .3, .5)
 

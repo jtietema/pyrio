@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from src.asset_manager import AssetManager
+import src.assets as assets
 from src.overlay import Overlay
 
 class AbstractMenu():
@@ -12,7 +12,7 @@ class AbstractMenu():
     """
     def __init__(self):
         self.index = 0
-        self.flower = AssetManager.get_image(('menu','items'), 'flower').get_surface()
+        self.flower = assets.images.menu.items.flower.get_surface()
         self.screen_size = None
         self.timeout = 300
         self.menu()

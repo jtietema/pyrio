@@ -1,11 +1,13 @@
 from src.animation import Animation
 from src.states.enemies.moving import MovingState
 
+import src.assets as assets
+
 class FlatState(MovingState):
     def __init__(self, enemy):
         animations = {
-            'left': Animation(('enemies', 'krush'), ('flat_left_1', 'flat_left_2', 'flat_left_3'), 100),
-            'right': Animation(('enemies', 'krush'), ('flat_right_1', 'flat_right_2', 'flat_right_3'), 100)
+            'left': Animation(assets.images.enemies.krush, ('flat_left_1', 'flat_left_2', 'flat_left_3'), 100),
+            'right': Animation(assets.images.enemies.krush, ('flat_right_1', 'flat_right_2', 'flat_right_3'), 100)
         }
         
         self.counter = 0

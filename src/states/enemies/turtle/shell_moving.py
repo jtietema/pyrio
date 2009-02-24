@@ -2,10 +2,12 @@
 from src.animation import Animation
 from src.states.enemies.moving import MovingState
 
+import src.assets as assets
+
 class ShellMovingState(MovingState):
     def __init__(self, enemy):
         animations = {
-            'moving': Animation(('enemies', 'turtle'), ('shell_move_1', 'shell_move_2', 'shell_move_3'), 100)
+            'moving': Animation(assets.images.enemies.turtle, ('shell_move_1', 'shell_move_2', 'shell_move_3'), 100)
         }
         
         MovingState.__init__(self, enemy, animations, .5)

@@ -2,10 +2,12 @@ from src.animation import Animation
 from src.game_entity import GameEntity
 from src.states.state import State
 
+import src.assets as assets
+
 class ShellState(State):
     def __init__(self, enemy):
         animations = {
-            'shell': Animation(('enemies', 'turtle'), ('shell_front',))
+            'shell': Animation(assets.images.enemies.turtle, ('shell_front',))
         }
         
         State.__init__(self, enemy, animations)

@@ -6,11 +6,13 @@ from game_locals import *
 from game_entity import GameEntity
 from animation import Animation
 
+import assets
+
 class Coin(GameEntity):
     def __init__(self, (x,y), map):
         GameEntity.__init__(self, (x,y), (30,30))
         self.map = map
-        self.animation = Animation(('goldpiece', 'yellow'), ('1','2','3','4','5','6','7','8','9','10'))
+        self.animation = Animation(assets.images.goldpiece.yellow, ('1','2','3','4','5','6','7','8','9','10'))
     
     def update(self, tick_data):
         self.animation.process(tick_data['time_passed'])

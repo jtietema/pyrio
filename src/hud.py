@@ -2,13 +2,13 @@
 
 import pygame
 
-from asset_manager import AssetManager
+import assets
 
 class Hud():
     def __init__(self):
         # image to be rendered
-        self.livesImage = AssetManager.get_image('game','lives')
-        self.scoreImage = AssetManager.get_image('game', 'score')
+        self.livesImage = assets.images.game.lives
+        self.scoreImage = assets.images.game.score
         self.font = pygame.font.SysFont('default', 56)
 
         # data needed from tick_data

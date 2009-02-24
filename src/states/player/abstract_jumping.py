@@ -5,11 +5,13 @@ from src.game_entity import GameEntity
 
 from pygame.locals import *
 
+import src.assets as assets
+
 class AbstractJumpingState(State):
     def __init__(self, player):
         animations = {
-            'left' : Animation('player', ('jump_left', )),
-            'right': Animation('player', ('jump_right',))
+            'left' : Animation(assets.images.player, ('jump_left', )),
+            'right': Animation(assets.images.player, ('jump_right',))
         }
         State.__init__(self, player, animations, .3, .5)
         

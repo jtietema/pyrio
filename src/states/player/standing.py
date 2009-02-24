@@ -4,11 +4,13 @@ from src.animation import Animation
 
 from pygame.locals import *
 
+import src.assets as assets
+
 class StandingState(State):
     def __init__(self, player):
         animations = {
-                'left': Animation('player', ('stand_left',)),
-                'right': Animation('player', ('stand_right',))
+                'left': Animation(assets.images.player, ('stand_left',)),
+                'right': Animation(assets.images.player, ('stand_right',))
         }
         State.__init__(self, player, animations, .3, .5)
 
