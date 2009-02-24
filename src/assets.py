@@ -66,7 +66,15 @@ class AssetFolder:
         """Magically called when an attribute doesn't exist. This currently assumes
         the requested attribute is a folder, since all current implementations preload
         all assets when a folder is initialized."""
-        return self.load_nested_folder(name)
+        try:
+            self.__dict__[name] = self.load_asset(name)
+        except:
+            self.__dict__[name] = self.load_nested_folder(name)
+        
+        return self.__dict__[name]
+    
+    def load_asset(self, name):
+        raise AssetFolderException("Unknown asset '%s'" % (name,))
     
     def get_path(self):
         """Returns the folder as a relative path from the main folder."""
@@ -190,12 +198,6 @@ class SoundFolder(AssetFolder):
         for sound_file in glob(self.get_path() + '/*.ogg'):
             filename_base = os.path.splitext(os.path.basename(sound_file))[0]
             self.__dict__[filename_base] = pygame.mixer.Sound(sound_file)
-
-
-# class MusicFolder(AssetFolder):
-#     PRELOAD_ASSETS = False
-#     
-#     
     
 
 # Asset instances

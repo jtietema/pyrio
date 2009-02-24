@@ -14,8 +14,13 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Pyrio.  If not, see <http://www.gnu.org/licenses/>.
 """
+
+import pygame
+import os
+
 from src.game_states.game_state import GameState
 from src.overlay import Overlay
+from src.game_locals import *
 
 class MapTransitionState(GameState):
     """State used for transitions between maps. Also used on initial load of the first
@@ -23,7 +28,12 @@ class MapTransitionState(GameState):
     
     def update(self, tick_data):
         """Updates no entities, since we want to want everything to be stale and simply
-        perform a fade-out/fade-in."""        
+        perform a fade-out/fade-in."""
+        for event in self.get_events():
+            if event.type == MAP_FINISHED_MUSIC_DONE:
+                pygame.mixer.music.set_endevent()
+                self.overlay.fade_in()
+                
         time_passed = tick_data['time_passed']
         self.overlay.update(time_passed)
         
@@ -37,13 +47,16 @@ class MapTransitionState(GameState):
         
         self.overlay.render(screen)
         
-    def enter(self, previous_state):        
+    def enter(self, previous_state):
         self.overlay = Overlay(fade_speed=500)
         self.overlay.register_fade_in_listener(self)
         self.overlay.register_fade_out_listener(self)
-        
         self.overlay.set_opacity(0)
-        self.overlay.fade_in()
+        
+        pygame.mixer.music.load(os.path.join('assets', 'music', 'map_finished.ogg'))
+        pygame.mixer.music.set_endevent(MAP_FINISHED_MUSIC_DONE)
+        pygame.mixer.music.play(1)
+        
         self.done = False
     
     def exit(self, next_state):

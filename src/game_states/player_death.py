@@ -14,6 +14,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Pyrio.  If not, see <http://www.gnu.org/licenses/>.
 """
+
+import pygame
 from pygame.locals import *
 from src.game_locals import *
 
@@ -39,3 +41,6 @@ class PlayerDeathState(GameState):
         self.game.hud.update(tick_data)
         
         return next_state
+    
+    def enter(self, previous_state):
+        pygame.mixer.music.stop()
