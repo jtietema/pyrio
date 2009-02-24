@@ -27,6 +27,8 @@ from states.player.falling import FallingState
 from states.player.bouncing import BouncingState
 from states.player.dead import DeadState
 
+import assets
+
 class Player(MovableEntity):
     def __init__(self, position, map):
         MovableEntity.__init__(self, position, (48, 60), map)
@@ -71,7 +73,7 @@ class Player(MovableEntity):
             self.currentState.set_source_image(image)
             pygame.event.post(pygame.event.Event(PLAYER_DEATH))
             
-            # AssetManager.get_sound('test', 'test').play()
+            assets.sounds.player.dead.play()
     
     def bounce(self, tick_data, bottom):
         self.rect.bottom = bottom

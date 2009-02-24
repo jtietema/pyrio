@@ -34,6 +34,9 @@ class WalkingState(MovingState):
         if self.entity.collides_with_player():
             if self.entity.is_hit_by_player():
                 self.entity.bounce_player(tick_data)
+                
+                assets.sounds.krush.hit.play()
+                                
                 return 'flat'
             
             self.entity.hit_player(tick_data)
