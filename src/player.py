@@ -19,7 +19,6 @@ from game_locals import *
 import pygame
 
 from movable_entity import MovableEntity
-from asset_manager import AssetManager
 
 from states.player.walking import WalkingState
 from states.player.standing import StandingState
@@ -72,7 +71,7 @@ class Player(MovableEntity):
             self.currentState.set_source_image(image)
             pygame.event.post(pygame.event.Event(PLAYER_DEATH))
             
-            AssetManager.get_sound('test', 'test').play()
+            # AssetManager.get_sound('test', 'test').play()
     
     def bounce(self, tick_data, bottom):
         self.rect.bottom = bottom

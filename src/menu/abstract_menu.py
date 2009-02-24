@@ -14,7 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Pyrio.  If not, see <http://www.gnu.org/licenses/>.
 """
-from src.asset_manager import AssetManager
+import src.assets as assets
 from src.overlay import Overlay
 
 class AbstractMenu():
@@ -26,7 +26,7 @@ class AbstractMenu():
     """
     def __init__(self):
         self.index = 0
-        self.flower = AssetManager.get_image(('menu','items'), 'flower').get_surface()
+        self.flower = assets.images.menu.items.flower.get_surface()
         self.screen_size = None
         self.timeout = 300
         self.menu()

@@ -20,12 +20,14 @@ from src.game_entity import GameEntity
 
 from pygame.locals import *
 
+import src.assets as assets
+
 class WalkingState(State):
 
     def __init__(self, player):
         animations = {
-            'left': Animation('player', ('walk_left_1', 'walk_left_2'), 200),
-            'right': Animation('player', ('walk_right_1', 'walk_right_2'), 200)
+            'left': Animation(assets.images.player, ('walk_left_1', 'walk_left_2'), 200),
+            'right': Animation(assets.images.player, ('walk_right_1', 'walk_right_2'), 200)
         }
         State.__init__(self, player, animations, .3, .5)
 

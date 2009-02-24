@@ -14,11 +14,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Pyrio.  If not, see <http://www.gnu.org/licenses/>.
 """
-from asset_manager import AssetManager
 from game_entity import GameEntity
 
 class Animation():
-    def __init__(self, image_group, images, frame_length=GameEntity.FRAME_LENGTH):
+    def __init__(self, asset_folder, images, frame_length=GameEntity.FRAME_LENGTH):
         # Counter to hold the total number of milliseconds passed since the start.
         # Please note that this counter is reset when its value gets too high or too low.
         self.counter = 0
@@ -34,7 +33,7 @@ class Animation():
         # Load the images for this animation
         self.images = []
         for name in images:
-            self.images.append(AssetManager.get_image(image_group, name))
+            self.images.append(asset_folder.__dict__[name])
 
         self.image = self.images[0]
         

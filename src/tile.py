@@ -15,11 +15,11 @@ You should have received a copy of the GNU General Public License
 along with Pyrio.  If not, see <http://www.gnu.org/licenses/>.
 """
 from game_entity import GameEntity
-from asset_manager import AssetManager
+import assets
 
 class Tile(GameEntity):
     def __init__(self, name, (x, y)):
-        self.image = AssetManager.get_image('map', name)
+        self.image = assets.images.map.__dict__[name]
         
         GameEntity.__init__(self, (x, y), self.image.get_size())
     

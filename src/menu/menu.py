@@ -19,16 +19,16 @@ import sys
 from abstract_menu import AbstractMenu
 from video_menu import VideoMenu
 from controls_menu import ControlsMenu
-from src.asset_manager import AssetManager
+import src.assets as assets
 
 class Menu(AbstractMenu):
     
     def menu(self):
         self.menu_items = [
-            AssetManager.get_image('menu','start').get_surface(),
-            AssetManager.get_image('menu','controls').get_surface(),
-            AssetManager.get_image('menu','video').get_surface(),
-            AssetManager.get_image('menu','quit').get_surface()
+            assets.images.menu.start.get_surface(),
+            assets.images.menu.controls.get_surface(),
+            assets.images.menu.video.get_surface(),
+            assets.images.menu.quit.get_surface()
         ]
     
     def select(self, index, tick_data):
