@@ -89,6 +89,8 @@ class Game():
                 elif event.type == KEYDOWN:
                     if event.key == K_q:
                         exit()
+                    if event.key == K_n:
+                        pygame.event.post(pygame.event.Event(MAP_FINISHED))
                 elif event.type == COIN_COLLECTED:
                     self.score += 1
                 elif event.type == VIDEOMODE_CHANGED:
