@@ -18,6 +18,7 @@ from pygame.locals import *
 from src.game_locals import *
 
 from src.game_states.game_state import GameState
+from src.config import Config
 
 class PlayingState(GameState):
     """State to represent a game that is currently active, allowing for user interaction
@@ -39,10 +40,11 @@ class PlayingState(GameState):
                 next_state = 'map_transition'
             elif event.type == KEYDOWN:
                 if event.key == K_d:
-                    if self.debug:
-                        self.debug = False
+                    config = Config.get_instance()
+                    if config.debug:
+                        config.debug = False
                     else:
-                        self.debug = True
+                        config.debug = True
                 if event.key == K_r:
                     self.game.reset_world()
                 if event.key == K_ESCAPE and next_state is 'playing':

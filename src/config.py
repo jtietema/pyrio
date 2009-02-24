@@ -38,6 +38,7 @@ class Config():
                      'cancel'   : K_ESCAPE,
                      'select'   : K_RETURN
                      }
+        self.debug = False
         self.settings_file = os.path.join(os.path.expanduser("~"), '.pyrio')
         self.settings = None
         self.load_config()

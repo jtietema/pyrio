@@ -26,4 +26,4 @@ class JumpingState(AbstractJumpingState):
     
     def should_continue_jumping(self, tick_data):
         """Determines if the player should continue jumping."""
-        return tick_data['actions'].jump and self.jumping_time <= JumpingState.MAX_JUMPING_TIME
+        return tick_data['actions'].jump and self.jumping_time <= JumpingState.MAX_JUMPING_TIME and not self.entity.map.collisions(self.entity, (0, -1))

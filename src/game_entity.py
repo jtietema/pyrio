@@ -16,6 +16,8 @@ along with Pyrio.  If not, see <http://www.gnu.org/licenses/>.
 """
 import pygame
 
+from config import Config
+
 class GameEntity():
     # Direction constants
     DIRECTION_RIGHT = 'right'
@@ -26,8 +28,8 @@ class GameEntity():
     
     def __init__(self, (x,y), (width, height)):
         self.rect = pygame.Rect((x - (width / 2),y - (height / 2)), (width,height))
-        self.debug = False
         self.player = None
+        self.config = Config.get_instance()
         
     def get_x(self):
         return self.rect.centerx
@@ -89,7 +91,7 @@ class GameEntity():
         return self.rect.collidedict(dict)
 
     def render_debug(self, screen, (map_x_offset, map_y_offset)):
-        if self.debug:
+        if self.config.debug:
             rect_x = self.rect.x - map_x_offset
             rect_y = self.rect.y - map_y_offset
             rect_w = self.rect.width

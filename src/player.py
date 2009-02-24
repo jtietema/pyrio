@@ -57,7 +57,7 @@ class Player(MovableEntity):
         self.render_debug(screen)
 
     def render_debug(self, screen):
-        if self.debug:
+        if self.config.debug:
             x_screen = screen.get_width() / 2 - self.rect.width / 2
             y_screen = screen.get_height() / 2 - self.rect.height / 2
             pygame.draw.rect(screen, (0,255,0), (x_screen, y_screen, self.rect.w, self.rect.h), 1)

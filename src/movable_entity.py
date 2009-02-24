@@ -68,9 +68,6 @@ class MovableEntity(GameEntity):
             next_state.enter()
             self.currentState = next_state
 
-        # check for debug mode
-        self.debug = tick_data['debug']
-    
     def render(self, screen, map_offsets):
         GameEntity.render(self, screen, self.currentState.get_image(), map_offsets)
     
@@ -80,15 +77,41 @@ class MovableEntity(GameEntity):
         Returns true if a movement could be performed, returns false if not."""
         if x_delta is not 0 or y_delta is not 0:
             if not self.map.collisions(self, (x_delta, y_delta)):
+                # the move is possible so do it
                 self.rect = self.rect.move(x_delta, y_delta)
                 return True
-            elif y_delta is not 0 and not self.map.collisions(self, (0, y_delta)):
-                self.rect = self.rect.move(0, y_delta)
-                return True
-            elif x_delta is not 0 and not self.map.collisions(self, (x_delta, 0)):
-                self.rect = self.rect.move(x_delta, 0)
-                return True
-
+            else:
+                x = 0
+                y = 0
+                if self.map.collisions(self, (0, y_delta)):
+                    # the y is limited, narrow down
+                    while not self.map.collisions(self, (x_delta, y)) and y - y_delta is not 0:
+                        if y_delta < 0:
+                            y -= 1
+                        else:
+                            y += 1
+                else:
+                    y = y_delta
+                if self.map.collisions(self, (x_delta, 0)):
+                    # the x is limited, narrow down
+                    while not self.map.collisions(self, (x, y_delta)) and x - x_delta is not 0:
+                        if x_delta < 0:
+                            x -= 1
+                        else:
+                            x += 1
+                    # correct 1 pixel
+                    if x_delta < 0:
+                        x += 1
+                    else:
+                        x -= 1
+                else:
+                    x = x_delta
+                if x is not 0 or y is not 0:
+                    self.rect = self.rect.move(x, y)
+                    return True
+                else:
+                    return False
+            
         return False
     
     def switch_state(self, target_state):

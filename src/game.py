@@ -33,6 +33,7 @@ from game_states.map_transition import MapTransitionState
 
 class Game():
     def __init__(self):
+        
         self.lives = 3
         self.score = 0
         
@@ -62,8 +63,6 @@ class Game():
         self.menu = Menu()
         
     def run(self):
-        pygame.init()
-        
         screen = self.switch_resolution()
         config = Config.get_instance()
         
