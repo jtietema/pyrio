@@ -17,9 +17,9 @@ along with Pyrio.  If not, see <http://www.gnu.org/licenses/>.
 
 import pygame
 import os
-from glob import glob
 from ConfigParser import RawConfigParser
 from image import Image
+from sound import Sound
 
 
 # Module constants
@@ -67,11 +67,13 @@ class AssetFolder:
         the requested attribute is a folder, since all current implementations preload
         all assets when a folder is initialized."""
         try:
-            self.__dict__[name] = self.load_asset(name)
+            asset = self.load_asset(name)
         except:
-            self.__dict__[name] = self.load_nested_folder(name)
+            asset = self.load_nested_folder(name)
         
-        return self.__dict__[name]
+        setattr(self, name, asset)
+        
+        return asset
     
     def load_asset(self, name):
         raise AssetFolderException("Unknown asset '%s'" % (name,))
@@ -86,12 +88,12 @@ class AssetFolder:
     def get(self, name):
         """Returns a single asset based on its name. This is restricted to the scope
         of this folder, meaning it will not look for the file recursively."""
-        if not self.__dict__[arg]:
-            raise AssetFolderException("No attribute '%s'" % (arg,))
-        if isinstance(self.__dict__[arg], AssetFolder):
+        val = getattr(self, arg)
+        
+        if isinstance(val, AssetFolder):
             raise AssetFolderException("'%s' is a folder, not an asset" % (arg,))
         
-        return self.__dict__[arg]
+        return val
     
     def get_multiple(self, *args):
         """Returns multiple assets in a list based on the arguments passed in. Throws an
@@ -106,7 +108,7 @@ class AssetFolder:
         """Creates an AssetFolder object for the specified nested folder, and sets it
         on this object as an attribute."""
         folder = self.__class__(name, self)
-        self.__dict__[name] = folder
+        setattr(self, name, folder)
         return folder
     
     def load_nested_folders(self):
@@ -116,7 +118,7 @@ class AssetFolder:
                 self.load_nested_folder(item)
 
 
-class ImageFolder(AssetFolder):
+class AssetConfigFolder(AssetFolder):
     def load_assets(self):
         """Tries to load the assets in this folder. Only loads assets defined in a
         pkg.cfg file in this folder, which should adhere to the syntax known by the
@@ -126,7 +128,8 @@ class ImageFolder(AssetFolder):
             self.parse_config(config_file)
     
     def parse_config(self, config_file):
-        """Parses the config file passed in and loads the images."""
+        """Parses the config file supplied and calls parse_file(config, section) for
+        every section in the config file. You must implement this method yourself."""
         config = RawConfigParser()
         config.read(config_file)
         
@@ -136,7 +139,27 @@ class ImageFolder(AssetFolder):
             if section == DEFAULTS_CONFIG_SECTION: continue
             
             self.parse_file(config, section)
-    
+        
+    def get_config_option(self, config, method_name, section, option, default=None):
+        """Tries to load the config option from the config object passed in. If the option
+        is not found in the section specified, it tries to fetch the option from the
+        default section (__default__). Otherwise, returns the default value."""
+        method = getattr(config, method_name)
+        
+        if config.has_option(section, option):
+            value = method(section, option)
+        elif config.has_option('__default__', option):
+            value = method('__default__', option)
+        
+        try:
+            value
+        except NameError:
+            value = default
+        
+        return value
+
+
+class ImageFolder(AssetConfigFolder):    
     def parse_file(self, config, section):
         """Parses one file (i.e. one section) in the config file. This also takes care
         of parsing options in the config file (including optional defaults for settings).
@@ -146,58 +169,39 @@ class ImageFolder(AssetFolder):
         image = pygame.image.load(file_path).convert_alpha()
         
         # Scale image?
-        if config.has_option(section, 'width'):
-            width = config.getint(section, 'width')
-        elif config.has_option('__default__', 'width'):
-            width = config.getint('__default__', 'width')
-        else:
-            width = DEFAULT_WIDTH
-        
-        if config.has_option(section, 'height'):
-            height = config.getint(section, 'height')
-        elif config.has_option('__default__', 'height'):
-            height = config.getint('__default__', 'height')
-        else:
-            height = DEFAULT_HEIGHT
+        width = self.get_config_option(config, 'getint', section, 'width', DEFAULT_WIDTH)
+        height = self.get_config_option(config, 'getint', section, 'height', DEFAULT_HEIGHT)
         
         if image.get_size() != (width, height):
             image = pygame.transform.smoothscale(image, (width, height))
         
         # Flip image?
-        flip_x = config.has_option(section, 'flip_x') and config.getboolean(section, 'flip_x')
-        flip_y = config.has_option(section, 'flip_y') and config.getboolean(section, 'flip_y')
+        flip_x = self.get_config_option(config, 'getboolean', section, 'flip_x', False)
+        flip_y = self.get_config_option(config, 'getboolean', section, 'flip_y', False)
         if flip_x or flip_y:
             image = pygame.transform.flip(image, flip_x, flip_y)
 
         # read if offset is present
-        offset_x = 0
-        if config.has_option(section, 'offset_x'):
-            offset_x = config.getint(section, 'offset_x')
-        elif config.has_option('__default__', 'offset_x'):
-            offset_x = config.getint('__default__', 'offset_x')
-
-        offset_y = 0
-        if config.has_option(section, 'offset_y'):
-            offset_y = config.getint(section, 'offset_y')
-        elif config.has_option('__default__', 'offset_y'):
-            offset_y = config.getint('__default__', 'offset_y')
+        offset_x = self.get_config_option(config, 'getint', section, 'offset_x', 0)
+        offset_y = self.get_config_option(config, 'getint', section, 'offset_y', 0)
         
-        self.__dict__[section] = Image(image, (offset_x, offset_y))
+        setattr(self, section, Image(image, (offset_x, offset_y)))
 
 
-class SoundFolder(AssetFolder):
+class SoundFolder(AssetConfigFolder):
     """Represents a folder containing sound files. Since sound files will not be altered
     using settings, we are not using package configuration files. Instead, we assume all
     sound files are ogg files."""
     
     COLLECT_FOLDERS_RECURSIVELY = True
     
-    def load_assets(self):
+    def parse_file(self, config, section):
         """Loads all the sounds in this folder. Assumes all the sounds are ogg files,
         and thus have a .ogg extension."""
-        for sound_file in glob(self.get_path() + '/*.ogg'):
-            filename_base = os.path.splitext(os.path.basename(sound_file))[0]
-            self.__dict__[filename_base] = pygame.mixer.Sound(sound_file)
+        file_path = os.path.join(self.get_path(), config.get(section, 'file'))
+        volume = self.get_config_option(config, 'getfloat', section, 'volume', 1.)
+        
+        setattr(self, section, Sound(file_path, volume))
     
 
 # Asset instances

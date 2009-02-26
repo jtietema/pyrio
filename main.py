@@ -21,6 +21,8 @@ import pygame
 pygame.mixer.pre_init(44100, -16, 2, 1024)
 pygame.init()
 
+pygame.mixer.music.set_volume(.6)
+
 from src.game import Game
 
 game = Game()

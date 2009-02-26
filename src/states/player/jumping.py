@@ -14,6 +14,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Pyrio.  If not, see <http://www.gnu.org/licenses/>.
 """
+
+import src.assets as assets
+
 from src.states.player.abstract_jumping import AbstractJumpingState
 
 class JumpingState(AbstractJumpingState):
@@ -27,3 +30,8 @@ class JumpingState(AbstractJumpingState):
     def should_continue_jumping(self, tick_data):
         """Determines if the player should continue jumping."""
         return tick_data['actions'].jump and self.jumping_time <= JumpingState.MAX_JUMPING_TIME and not self.entity.map.collisions(self.entity, (0, -1))
+    
+    def enter(self):
+        AbstractJumpingState.enter(self)
+        
+        assets.sounds.jump.play()

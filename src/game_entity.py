@@ -14,7 +14,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Pyrio.  If not, see <http://www.gnu.org/licenses/>.
 """
+
 import pygame
+import math
 
 from config import Config
 
@@ -25,6 +27,10 @@ class GameEntity():
     
     # Default length of a frame for the sprite animation in milliseconds
     FRAME_LENGTH = 300
+    
+    # The maximum distance for playing sounds. The entity uses this value to linearly
+    # decrease the volume of the sound to be played based on the distance to the player.
+    SOUND_MAX_DISTANCE = 2000
     
     def __init__(self, (x,y), (width, height)):
         self.rect = pygame.Rect((x - (width / 2),y - (height / 2)), (width,height))
@@ -97,4 +103,23 @@ class GameEntity():
             rect_w = self.rect.width
             rect_h = self.rect.height
             pygame.draw.rect(screen, (255,0,0), (rect_x, rect_y, rect_w, rect_h), 1)
+    
+    def distance_to_player(self):
+        """Calculates the distance to the player."""
+        x_delta = self.get_rect().centerx - self.player.get_rect().centerx
+        y_delta = self.get_rect().centery - self.player.get_rect().centery
+        return math.sqrt(x_delta ** 2 + y_delta ** 2)
+    
+    def play_sound_relative(self, sound):
+        """Plays the sound object, and calculates the relative volume based on the
+        distance to the playerself."""
+        distance = self.distance_to_player()
         
+        if distance >= GameEntity.SOUND_MAX_DISTANCE:
+            # Player is too far away, no sense in playing the sound since it volume will
+            # be zero anyway.
+            return
+        
+        remainder = GameEntity.SOUND_MAX_DISTANCE - distance
+        volume = remainder * 1. / GameEntity.SOUND_MAX_DISTANCE
+        sound.play(volume)
