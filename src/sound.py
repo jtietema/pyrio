@@ -1,5 +1,4 @@
 import pygame
-import copy
 
 class Sound:
     """Wraps a pygame Sound object, allowing for additional storage and volume
