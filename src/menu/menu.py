@@ -19,6 +19,7 @@ import sys
 from abstract_menu import AbstractMenu
 from video_menu import VideoMenu
 from controls_menu import ControlsMenu
+from package_menu import PackageMenu
 import src.assets as assets
 
 class Menu(AbstractMenu):
@@ -33,7 +34,8 @@ class Menu(AbstractMenu):
     
     def select(self, index, tick_data):
         if index is 0:
-            tick_data['pause'] = False
+            self.submenu = PackageMenu()
+            self.submenu.update(tick_data)
         elif index is 1:
             self.submenu = ControlsMenu()
             self.submenu.update(tick_data)

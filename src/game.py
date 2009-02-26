@@ -31,6 +31,7 @@ from game_states.playing import PlayingState
 from game_states.paused import PausedState
 from game_states.player_death import PlayerDeathState
 from game_states.map_transition import MapTransitionState
+from game_states.start import StartState
 
 class Game():
     def __init__(self):
@@ -46,19 +47,18 @@ class Game():
             'playing': PlayingState(self),
             'paused': PausedState(self),
             'player_death': PlayerDeathState(self),
-            'map_transition': MapTransitionState(self)
+            'map_transition': MapTransitionState(self),
+            'start': StartState(self)
         }
-        self.state = 'playing'
-        self.get_current_state().enter(None)
+        self.state = 'start'
         
-        self.map_package = MapPackage('testpak')
-    
     def get_current_state(self):
         """Returns the current state object. Useful since the current state is stored
         in string form on the game object."""
         return self.states[self.state]
 
-    def create(self):
+    def create(self, package):
+        self.map_package = MapPackage(package)
         self.world = self.map_package.current()
         self.hud = Hud()
         self.menu = Menu()
@@ -67,13 +67,13 @@ class Game():
         screen = self.switch_resolution()
         config = Config.get_instance()
         
+        self.get_current_state().enter(None)
+        
         pygame.display.set_caption('Pyrio')
         pygame.mouse.set_visible(False)
 
         clock = pygame.time.Clock()
         
-        self.create()
-
         actions = Actions()
 
         while True:
@@ -95,6 +95,10 @@ class Game():
                     self.score += 1
                 elif event.type == VIDEOMODE_CHANGED:
                     screen = self.switch_resolution()
+                elif event.type == MAP_PACKAGE_SELECTED:
+                    self.create(event.map_package)
+                    self.next_state('playing')
+                    state = self.get_current_state()
                 
                 # Make sure the current state also has access to this event.
                 state.add_event(event)
