@@ -88,7 +88,5 @@ class DeadState(State):
         else:
             surface = pygame.transform.rotozoom(self.image.get_surface(), self.angle, self.scale)
             offset_x, offset_y = self.image.get_offset()
-            offset_x /= self.scale / 2
-            offset_y /= self.scale / 2
             return Image(surface, (offset_x, offset_y))
             
