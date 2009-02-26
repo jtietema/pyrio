@@ -28,11 +28,14 @@ class PlayerDeathState(GameState):
         for event in self.get_events():
             if event.type == DEATH_ANIMATION_DONE:
                 self.game.lives -= 1
-                
-                # Reset the world.
-                self.game.reset_world()
-                
-                next_state = 'playing'
+                if self.game.lives is 0:
+                    next_state = 'start'
+                    self.game.lives = 3
+                    self.game.score = 0
+                else:
+                    # Reset the world.
+                    self.game.reset_world()
+                    next_state = 'playing'
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     next_state = 'paused'
