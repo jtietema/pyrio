@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 This file is part of Pyrio.
 
@@ -112,7 +113,7 @@ class Game():
             tick_data['lives'] = self.lives
             
             tick_data['debug'] = False # TODO: move to config!!!
-
+            
             next_state = state.update(tick_data)
             
             # Make sure we have received a string as the return value from the

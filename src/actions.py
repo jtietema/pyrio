@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 This file is part of Pyrio.
 
@@ -25,13 +26,7 @@ class Actions():
     are suppossed to use this class instead off reading the controls directly.
     """
     def __init__(self):
-        self.x = 0
-        self.y = 0
-        self.jump = False
-        self.select = False
-        self.cancel = False
-        self.joystick = None
-        
+        self.reset()
         # setup joystick/gamepad if present
         joystick = None
         if pygame.joystick.get_count() > 0:
@@ -54,7 +49,12 @@ class Actions():
         self.jump = boolean
 
     def reset(self):
-        self.__init__()
+        self.x = 0
+        self.y = 0
+        self.jump = False
+        self.select = False
+        self.cancel = False
+        self.joystick = None
 
     def set_select(self, boolean):
         self.select = True

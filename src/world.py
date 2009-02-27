@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 This file is part of Pyrio.
 
@@ -39,6 +40,14 @@ class World():
         pygame.mixer.music.play()
         
     def update(self, tick_data):
+        # this should prevent warping across the level on low frame rates
+        time_passed = tick_data['time_passed']
+        while time_passed > 100:
+            tick_data['time_passed'] = 100
+            time_passed -= 100
+            self.update(tick_data)
+        tick_data['time_passed'] = time_passed
+        
         self.player.update(tick_data)
         
         for enemy in self.enemies:
