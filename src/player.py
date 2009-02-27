@@ -73,7 +73,7 @@ class Player(MovableEntity):
             self.currentState.set_source_image(image)
             pygame.event.post(pygame.event.Event(PLAYER_DEATH))
             
-            assets.sounds.player.dead.play()
+            assets.sounds.dead.play()
     
     def bounce(self, tick_data, bottom):
         self.rect.bottom = bottom
