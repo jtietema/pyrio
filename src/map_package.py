@@ -51,7 +51,7 @@ class MapPackage():
     
     def has_next(self):
         """Determines if the package has more maps."""
-        return self.current_map_index + 1 < len(self.map_files)
+        return self.current_map_index + 1 < len(self.maps)
     
     def next(self):
         """Advanced the internal index counter and returns a new world object."""
