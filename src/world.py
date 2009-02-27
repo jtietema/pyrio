@@ -29,15 +29,34 @@ import enemies
 from coin import Coin
 
 class World():    
-    def __init__(self, map_file):
+    def __init__(self, map_file, options):
         self.player = None
         self.enemies = []
         self.items = []
         
+        self.options = {
+            'background': '#a4fcff'
+        }
+        self.options.update(options)
+        
+        self.background_color = self.convert_hex_color(self.options['background'])
+        
         self.map = self.deserialize(map_file)
         
-        pygame.mixer.music.load(os.path.join('assets', 'music', 'jungle_1.ogg'))
-        pygame.mixer.music.play()
+        if 'music' in self.options:
+            pygame.mixer.music.load(os.path.join('assets', 'music', options['music']))
+            pygame.mixer.music.play()
+    
+    def convert_hex_color(self, color):
+        """Converts a hex style color (#RRGGBB) to a tuple of RGB values (R, G, B) in
+        decimal form."""
+        format = r'^#?([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})$'
+        m = re.compile(format, re.IGNORECASE).match(color)
+        
+        if m is None:
+            raise Exception("Unknown hex color format.")
+        
+        return [int(n, 16) for n in m.group(*range(1, 4))]
         
     def update(self, tick_data):
         # this should prevent warping across the level on low frame rates
@@ -64,7 +83,8 @@ class World():
             pygame.event.post(pygame.event.Event(MAP_FINISHED))
     
     def update_player(self, tick_data):
-        """Updates only the player entity."""
+        """Updates only the player entity. Useful when the player is dead and all
+        other entities should remain static."""
         self.player.update(tick_data)
         
     def render(self, screen):
@@ -77,7 +97,7 @@ class World():
 
         map_offsets = (map_x_offset, map_y_offset)
         
-        screen.fill((164, 252, 255))
+        screen.fill(self.background_color)
         self.map.render(screen, map_offsets)
         
         for item in self.items:
