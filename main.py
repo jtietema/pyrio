@@ -16,6 +16,14 @@ You should have received a copy of the GNU General Public License
 along with Pyrio.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+# Import Psyco if available
+try:
+    import psyco
+    psyco.full()
+    print 'psyco'
+except ImportError:
+    pass
+
 import pygame
 
 pygame.mixer.pre_init(44100, -16, 2, 1024)
