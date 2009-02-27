@@ -45,7 +45,7 @@ class World():
         
         if 'music' in self.options:
             pygame.mixer.music.load(os.path.join('assets', 'music', options['music']))
-            pygame.mixer.music.play()
+            pygame.mixer.music.play(-1)
     
     def convert_hex_color(self, color):
         """Converts a hex style color (#RRGGBB) to a tuple of RGB values (R, G, B) in
