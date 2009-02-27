@@ -20,7 +20,6 @@ along with Pyrio.  If not, see <http://www.gnu.org/licenses/>.
 try:
     import psyco
     psyco.full()
-    print 'psyco'
 except ImportError:
     pass
 
