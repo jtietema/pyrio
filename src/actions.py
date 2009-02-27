@@ -54,7 +54,6 @@ class Actions():
         self.jump = False
         self.select = False
         self.cancel = False
-        self.joystick = None
 
     def set_select(self, boolean):
         self.select = True
