@@ -28,15 +28,19 @@ import enemies
 from coin import Coin
 
 class World():    
-    def __init__(self, map_file):
+    def __init__(self, map_file, options):
         self.player = None
         self.enemies = []
         self.items = []
         
+        self.options = {}
+        self.options.update(options)
+        
         self.map = self.deserialize(map_file)
         
-        pygame.mixer.music.load(os.path.join('assets', 'music', 'jungle_1.ogg'))
-        pygame.mixer.music.play()
+        if 'music' in options:
+            pygame.mixer.music.load(os.path.join('assets', 'music', options['music']))
+            pygame.mixer.music.play()
         
     def update(self, tick_data):
         self.player.update(tick_data)
@@ -55,7 +59,8 @@ class World():
             pygame.event.post(pygame.event.Event(MAP_FINISHED))
     
     def update_player(self, tick_data):
-        """Updates only the player entity."""
+        """Updates only the player entity. Useful when the player is dead and all
+        other entities should remain static."""
         self.player.update(tick_data)
         
     def render(self, screen):
