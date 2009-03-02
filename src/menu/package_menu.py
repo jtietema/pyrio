@@ -23,7 +23,7 @@ from src.game_locals import *
 
 class PackageMenu(AbstractMenu):
     def menu(self):
-        self.font = pygame.font.SysFont('default', 48)
+        self.font = pygame.font.SysFont('sans', 48)
         self.paks = os.listdir(os.path.join('.', 'maps'))
         self.menu_items = []
         for pak in self.paks:

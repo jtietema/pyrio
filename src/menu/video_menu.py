@@ -37,7 +37,7 @@ class VideoMenu(AbstractMenu):
             doublebuffer = 'Doublebuffer: on'
         else:
             doublebuffer = 'Doublebuffer: off'
-        self.font = pygame.font.SysFont('default', 56)
+        self.font = pygame.font.SysFont('sans', 56)
         self.menu_items = [
             self.font.render('Resolution', True, (200,200,200)),
             self.font.render(fullscreen, True, (200,200,200)),

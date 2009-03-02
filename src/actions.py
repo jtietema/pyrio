@@ -28,7 +28,7 @@ class Actions():
     def __init__(self):
         self.reset()
         # setup joystick/gamepad if present
-        joystick = None
+        self.joystick = None
         if pygame.joystick.get_count() > 0:
             # at least one joystick is found
             print str(pygame.joystick.get_count()) + ' joystick(s) found'

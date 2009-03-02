@@ -23,7 +23,7 @@ class Hud():
         # image to be rendered
         self.livesImage = assets.images.game.lives
         self.scoreImage = assets.images.game.score
-        self.font = pygame.font.SysFont('default', 56)
+        self.font = pygame.font.SysFont('sans', 56)
 
         # data needed from tick_data
         display_info = pygame.display.Info()

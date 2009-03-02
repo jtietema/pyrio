@@ -24,7 +24,7 @@ class ResolutionMenu(AbstractMenu):
     def menu(self):
         self.modes = pygame.display.list_modes(32)
         self.menu_items = []
-        self.font = pygame.font.SysFont('default', 48)
+        self.font = pygame.font.SysFont('sans', 48)
         for mode in self.modes:
             self.menu_items.append(self.font.render(str(mode[0]) + 'x' + str(mode[1]), True, (200,200,200)))
         self.menu_items.append(self.font.render('Back', True, (200,200,200)))
