@@ -86,10 +86,10 @@ class Game():
             # Event handling
             for event in pygame.event.get():
                 if event.type == QUIT:
-                    exit()
+                    sys.exit()
                 elif event.type == KEYDOWN:
                     if event.key == K_q:
-                        exit()
+                        sys.exit()
                     if event.key == K_n:
                         pygame.event.post(pygame.event.Event(MAP_FINISHED))
                 elif event.type == COIN_COLLECTED:
