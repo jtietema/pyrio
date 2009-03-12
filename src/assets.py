@@ -166,7 +166,13 @@ class ImageFolder(AssetConfigFolder):
         This method returns an Image object, containing the surface as well as some
         additional information like offsets to fix the bounding box."""
         file_path = os.path.join(self.get_path(), config.get(section, 'file'))
-        image = pygame.image.load(file_path).convert_alpha()
+        
+        image = pygame.image.load(file_path)
+        
+        if self.get_config_option(config, 'getboolean', section, 'alpha', True):
+            image = image.convert_alpha()
+        else:
+            image = image.convert()
         
         # Scale image?
         width = self.get_config_option(config, 'getint', section, 'width', DEFAULT_WIDTH)
