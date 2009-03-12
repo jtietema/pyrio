@@ -14,9 +14,7 @@ setup(
     ],
     options = {
         'py2app': {
-            'includes': ['pygame'],
-            'packages': ['py2app-0.3.6-py2.5']
+            'includes': ['pygame']
         }
     }
 )
-
