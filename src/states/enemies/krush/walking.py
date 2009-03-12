@@ -26,7 +26,7 @@ class WalkingState(MovingState):
             'right': Animation(assets.images.enemies.krush, ('walk_right_1', 'walk_right_2', 'walk_right_3'), 100)
         }
         
-        MovingState.__init__(self, enemy, animations, .3, 0)
+        MovingState.__init__(self, enemy, animations, .4, 0)
     
     def process(self, tick_data):
         MovingState.process(self, tick_data)
