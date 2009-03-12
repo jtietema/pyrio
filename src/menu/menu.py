@@ -27,7 +27,7 @@ class Menu(AbstractMenu):
     def menu(self):
         self.menu_items = [
             assets.images.menu.start.get_surface(),
-            assets.images.menu.controls.get_surface(),
+            #assets.images.menu.controls.get_surface(),
             assets.images.menu.video.get_surface(),
             assets.images.menu.quit.get_surface()
         ]
@@ -36,13 +36,13 @@ class Menu(AbstractMenu):
         if index is 0:
             self.submenu = PackageMenu()
             self.submenu.update(tick_data)
+        #elif index is 1:
+            #self.submenu = ControlsMenu()
+            #self.submenu.update(tick_data)
         elif index is 1:
-            self.submenu = ControlsMenu()
-            self.submenu.update(tick_data)
-        elif index is 2:
             self.submenu = VideoMenu()
             self.submenu.update(tick_data)
-        elif index is 3:
+        elif index is 2:
             print 'Bye...'
             sys.exit()
     
