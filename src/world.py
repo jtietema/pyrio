@@ -116,11 +116,14 @@ class World():
     TILE_MAP = {
         ' ': None,
         '-': 'up',
+        '_': 'down',
         '#': 'middle',
         '<': 'left',
         '>': 'right',
         '/': 'left_up',
+        '(': 'left_down',
         '\\': 'right_up',
+        ')': 'right_down',
         '!': 'pipe_ver',
         '+': 'pipe_up',
         '&': 'stone'
